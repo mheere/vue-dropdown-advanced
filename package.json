@@ -7,7 +7,7 @@
   "browser": {
     "./sfc": "src/vdt-mh.vue"
   },
-  "private": false,
+  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

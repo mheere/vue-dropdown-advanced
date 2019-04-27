@@ -26,7 +26,7 @@ export function instanceOf(typeA: any, typeB: any) {
 
 // simply get a whole lot of coordinates of where the element is positioned
 export function getCoords(elem: any) { // crossbrowser version
-    if (!elem) return;
+    if (!elem) return undefined;
 
     var box = elem.getBoundingClientRect();
 

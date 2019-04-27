@@ -1,7 +1,7 @@
 
 //import Vue from 'vue';
 //import { DropDownMenu } from './DropDownMenu';
-import * as __utils from '../utils';
+import { createGuidRight5 }   from '../utils';
 
 export enum DropDownDirection {
     DownRight,
@@ -69,7 +69,7 @@ export class DropDownItemBase {
 
     constructor(key: string = "", text: string = "") {
         // if no key was given then we will allocate one
-        if (!key) key = __utils.createGuidRight5();
+        if (!key) key = createGuidRight5();
         this.key = key;
         this.text = text;
     }

@@ -37,9 +37,9 @@ export default Vue.extend({
     let item: DropDownItemBase;
     item = new HeaderItem("This is my header"); 
     this.myitems.push(item);
-    item = new ActionItem("itemA", "Item A"); 
-    this.myitems.push(item);
-    item = new ActionItem("itemB", "Item B"); 
+    let aitem = new ActionItem("itemA", "Item A", "mdi-home"); 
+    this.myitems.push(aitem);
+    item = new ActionItem("itemB", "Item B", "mdi-access-point"); 
     this.myitems.push(item);
     item = new ActionItem("itemC", "Buy some Apples"); 
     this.myitems.push(item);

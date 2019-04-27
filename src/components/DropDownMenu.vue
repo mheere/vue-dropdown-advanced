@@ -1,21 +1,22 @@
 <template>
   <div class="dda-container" v-bind:style="getStyle" ref="mydd">
     <!-- <dropdown-toolbar v-bind:items="items"> </dropdown-toolbar> -->
-    <div class="dda-dropdown-list">
-      <div v-for="(item) in items" v-bind:key="item.key" >
-        <div v-if="item.isHeaderItem" class="header">
-          <span class="dda-dropdown-item">
-            {{ item.text }}
-          </span>
+      <div class="dda-dropdown-list">
+        <div v-for="(item) in items" v-bind:key="item.key" >
+          <div v-if="item.isHeaderItem" class="header">
+            <span class="dda-dropdown-item">
+              {{ item.text }}
+            </span>
+          </div>
+          <div v-else-if="item.isActionItem" class="action">
+            <span class="dda-dropdown-item">
+              <span v-if="item.hasImg" v-bind:class="item.imgClass"></span>
+              {{ item.text }}
+            </span>
+          </div>
+          <div v-else>nothing else...</div>
         </div>
-        <div v-else-if="item.isActionItem" class="action">
-          <span class="dda-dropdown-item">
-            {{ item.text }}
-          </span>
-        </div>
-        <div v-else>nothing else...</div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -23,6 +24,7 @@
 import Vue from "vue";
 import { ActionItem, DropDownItemBase } from "./DropDownItems";
 import { getCoords } from "../utils";
+import '@mdi/font/css/materialdesignicons.css';
 
 Vue.component("dropdown-toolbar", {
   props: ["items"],

@@ -188,10 +188,14 @@ export class ActionItem extends DropDownItemBase {
 
     get hasImg(): boolean { return this.imageLeft.length > 0}
 
-    private isImgFontAwesome(img: string): boolean { return img.startsWith("fa-") }
-    private isImgMaterial(img: string): boolean { return !this.isImgFontAwesome(img) }
-    public isLeftImgFontAwesome(): boolean { return this.isImgFontAwesome(this.imageLeft) }
-    public isLeftImgMaterial(): boolean { return this.isImgMaterial(this.imageLeft) }
+    get imgClass(): string {
+        return "mdi " + this.imageLeft;
+    }
+
+    // private isImgFontAwesome(img: string): boolean { return img.startsWith("fa-") }
+    // private isImgMaterial(img: string): boolean { return !this.isImgFontAwesome(img) }
+    // public isLeftImgFontAwesome(): boolean { return this.isImgFontAwesome(this.imageLeft) }
+    // public isLeftImgMaterial(): boolean { return this.isImgMaterial(this.imageLeft) }
 
     public addRightImage(img: string, toolTip?: string) { this.imageRight.push(new RightImageInfo(img, toolTip)); }
 

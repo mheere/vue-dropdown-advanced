@@ -3,7 +3,10 @@
     <!-- <dropdown-toolbar v-bind:items="items"> </dropdown-toolbar> -->
       <div class="dda-dropdown-list">
         <div v-for="(item) in items" v-bind:key="item.key" >
-          <div v-if="item.isHeaderItem" class="header">
+          <div v-if="item.isSeperatorItem" class="seperator">
+            
+          </div>
+          <div v-else-if="item.isHeaderItem" class="header">
             <span class="dda-dropdown-item">
               {{ item.text }}
             </span>
@@ -14,7 +17,7 @@
               {{ item.text }}
             </span>
           </div>
-          <div v-else>nothing else...</div>
+          <div v-else>** not implemented **</div>
         </div>
       </div>
   </div>
@@ -22,7 +25,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { ActionItem, DropDownItemBase } from "./DropDownItems";
+import { ActionItem, DropDownItemBase, DropDownDirection } from "./DropDownItems";
 import { getCoords } from "../utils";
 import '@mdi/font/css/materialdesignicons.css';
 
@@ -42,6 +45,7 @@ Vue.component("dropdown-toolbar", {
 export class MyData {
   public $element: any = null;
   public show: boolean = false;
+  public _direction: DropDownDirection = DropDownDirection.DownRight;
   // public mystyle: any = {
   //   position: "absolute" as "absolute",
   //   top: '5px',
@@ -53,21 +57,25 @@ export class MyData {
 
 export default Vue.extend({
   name: "DropDownMenu",
-  props: ["items"],
+  props: ["items", "direction"],
   data: () => new MyData(),
   methods: {
-    getDropDownClass() {
-      //   var direction = this.props.direction;
-      //   if (direction == DropDownDirection.DownLeft) return "down-left";
-      //   if (direction == DropDownDirection.DownRight) return "down-right";
-      //   if (direction == DropDownDirection.UpLeft) return "up-left";
-      //   if (direction == DropDownDirection.UpRight) return "up-right";
-    },
+    // getDropDownClass() {
+    //     if (this._direction == DropDownDirection.DownLeft) return "down-left";
+    //     if (this._direction == DropDownDirection.DownRight) return "down-right";
+    //     if (this._direction == DropDownDirection.UpLeft) return "up-left";
+    //     if (this._direction == DropDownDirection.UpRight) return "up-right";
+    // },
     getCoords() {
       let el = this.$element;
       if (!el) return {};
       let coords = getCoords(el);
       return coords;
+    },
+    close (e: any) {
+      if (!this.$element.contains(e.target)) {
+        this.show = false
+      }
     }
   },
   computed: {
@@ -79,11 +87,23 @@ export default Vue.extend({
       let styleBase: any = {
         position: "absolute" as "absolute",
         top: coords.height + "px",
-        left: "0px",
         display: this.show ? "inline-block" : "none"
       };
 
+      if (this._direction == DropDownDirection.DownRight || this._direction == DropDownDirection.UpRight)
+        styleBase.right = "0px";
+      else
+        styleBase.left = "0px";
+
       return styleBase;
+    }
+  },
+  watch: {
+    show: function(newValue: boolean) {
+      if (newValue) 
+        document.addEventListener('click', this.close);
+      else
+        document.removeEventListener('click',this.close)
     }
   },
   components: {},
@@ -91,6 +111,12 @@ export default Vue.extend({
     //debugger;
     let el: any = this.$refs.mydd;
     this.$element = el.parentElement;
+
+    // check if a direction was given
+    this._direction = DropDownDirection.DownLeft;   // set default
+    if (this.direction == "down-right") this._direction = DropDownDirection.DownRight;
+    else if (this.direction == "up-left") this._direction = DropDownDirection.UpLeft;
+    else if (this.direction == "up-right") this._direction = DropDownDirection.UpRight;
 
     // if the source element does not have a 'position' set then we'll set it to 'relative'
     var posNotSet =
@@ -110,6 +136,9 @@ export default Vue.extend({
     xx = xx.bind(this);
 
     this.$element.addEventListener("click", xx);
+  },
+  beforeDestroy () {
+    
   }
 });
 </script>
@@ -189,6 +218,7 @@ $back-colour-right-img-hover: #bbbdc361;
       @include border-box();
       -webkit-transition: background 0.2s; /* Safari */
       transition: background 0.2s;
+      white-space: nowrap;
 
       &:hover {
         background: $back-colour-hover;
@@ -208,12 +238,12 @@ $back-colour-right-img-hover: #bbbdc361;
         cursor: default;
       }
 
-      &.seperator {
+      & .seperator {
         height: 3px;
         background-color: #efebeb;
       }
 
-      &.header {
+      & .header {
         line-height: 31px !important;
         background-color: #adadad;
         color: white;
@@ -221,9 +251,9 @@ $back-colour-right-img-hover: #bbbdc361;
         padding-left: 5px;
       }
 
-      &:last-child {
-        border-bottom: 0px;
-      }
+      // & :last-child {
+      //   border-bottom: 0px;
+      // }
     }
 
     .img-check {

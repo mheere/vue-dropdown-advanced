@@ -7,9 +7,12 @@
 
     <div class='button example-dr'>
       Example Down Right
-      <drop-down-menu v-bind:items="myitems">  </drop-down-menu>
+      <drop-down-menu v-bind:items="myitems_dr">  </drop-down-menu>
     </div>
-    <div class='button example-dl'>Example Down Left</div>
+    <div class='button example-dl'>
+      Example Down Left
+       <drop-down-menu v-bind:items="myitems_dl" direction="down-right">  </drop-down-menu>
+    </div>
    
     <Banner position='bottom' hello='marcel'>This is a banner - testing by marcel...</Banner>
   </div>
@@ -20,30 +23,24 @@ import Vue from 'vue';
 import Banner from "./components/Banner.vue";
 import DropDownMenu from "./components/DropDownMenu.vue";
 import { DropDownItemBase, ActionItem, HeaderItem } from "./components/DropDownItems";
+import { getTestItems } from './data';
 
 export default Vue.extend({
   name: "app",
   data: () => {
-    const myitems : DropDownItemBase[] = [];
+    const myitems_dr : DropDownItemBase[] = [];
+    const myitems_dl : DropDownItemBase[] = [];
     return {
-      myitems
+      myitems_dr,
+      myitems_dl
     }
   },
   components: {
     Banner, DropDownMenu
   },
   created() {
-    //debugger;
-    let item: DropDownItemBase;
-    item = new HeaderItem("This is my header"); 
-    this.myitems.push(item);
-    let aitem = new ActionItem("itemA", "Item A", "mdi-home"); 
-    this.myitems.push(aitem);
-    item = new ActionItem("itemB", "Item B", "mdi-access-point"); 
-    this.myitems.push(item);
-    item = new ActionItem("itemC", "Buy some Apples"); 
-    this.myitems.push(item);
-    
+    this.myitems_dr = getTestItems("simple");
+    this.myitems_dl = getTestItems("logout-simple");
   }
 });
 </script>

@@ -1,8 +1,13 @@
-.DS_Store
-node_modules
-dist/
+node_modules/
 src/
 public/
+
+.npmignore
+.gitignore
+
+package-lock.json
+babel*
+vue.config.js
 
 # local env files
 .env.local
@@ -21,3 +26,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+

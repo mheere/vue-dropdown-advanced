@@ -189,7 +189,7 @@ export class ActionItem extends DropDownItemBase {
     get hasImg(): boolean { return this.imageLeft.length > 0}
 
     get imgClass(): string {
-        return "mdi " + this.imageLeft;
+        return "img img-left mdi " + this.imageLeft;
     }
 
     // private isImgFontAwesome(img: string): boolean { return img.startsWith("fa-") }
@@ -282,6 +282,10 @@ export class RightImageInfo {
     constructor(img: string, toolTip?: string) {
         this.imageRight = img;
         this.toolTip = toolTip || "";
+    }
+
+    get imgClass(): string {
+        return "img img-right mdi " + this.imageRight;
     }
 }
 

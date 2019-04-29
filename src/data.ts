@@ -12,26 +12,26 @@ const getItems = (context: string = '') => {
 		arr.push(new ActionItem("C", "Visit London"));
 	}
 	if (context == 'logout-simple') {
-		arr.push(new ActionItem("logout", "Logout", "fa-window-close-o"));
+		arr.push(new ActionItem("logout", "Logout", "mdi-exit-run"));
 		arr.push(new SeperatorItem());
-		arr.push(new ActionItem("profile", "Show Profile", "fa-user-o"));
-		arr.push(new ActionItem("shortcuts", "Show Shortcuts", "fa-mail-forward"));
-		arr.push(new ActionItem("setting", "System Settings", "fa-cog"));
+		arr.push(new ActionItem("profile", "Show Profile", "mdi-face"));
+		arr.push(new ActionItem("shortcuts", "Show Shortcuts", "mdi-access-point"));
+		arr.push(new ActionItem("setting", "System Settings", "mdi-cogs"));
 	}
 	if (context == 'logout') {
-		var item = new ActionItem("A", "Logout", "fa-download", true);
+		var item = new ActionItem("A", "Logout Show outstanding alerts", "mdi-cloud-download", true);
 		item.data = { pos: context };
-		item.addRightImage("fa-cog", "settings");
-		item.addRightImage("fa-window-close-o", "exit the application");
+		item.addRightImage("mdi-cogs", "settings");
+		item.addRightImage("mdi-exit-to-app", "exit the application");
 		arr.push(item);
 		arr.push(new SeperatorItem());
-		item = new ActionItem("profile", "Show User Profile", "fa-user-o");
+		item = new ActionItem("profile", "Show User Profile", "mdi-face");
 		item.addRightImage("fa-mail-forward", "forward this item");
 		item.textMarginRight = 32;
 		arr.push(item);
-		arr.push(new ActionItem("bell", "Show outstanding alerts", "fa-bell"));
-		arr.push(new ActionItem("shortcuts", "Show Bitcoin Valuation", "fa-btc"));
-		arr.push(new ActionItem("setting", "System Settings", "fa-cog"));
+		arr.push(new ActionItem("bell", "Show outstanding alerts", "mdi-bell-ring"));
+		arr.push(new ActionItem("shortcuts", "Show Bitcoin Valuation", "mdi-bitcoin"));
+		arr.push(new ActionItem("setting", "System Settings", "mdi-cogs"));
 	}
 	if (context == 'options-simple') {
 		arr.push(new HeaderItem("Choose your activities:"));

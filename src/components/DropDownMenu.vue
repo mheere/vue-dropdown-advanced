@@ -13,8 +13,15 @@
           </div>
           <div v-else-if="item.isActionItem" class="action">
             <span class="dda-dropdown-item">
-              <span v-if="item.hasImg" v-bind:class="item.imgClass"></span>
-              {{ item.text }}
+              <span v-if="item.hasImg" >
+                <span v-bind:class="item.imgClass"></span>
+              </span>
+              <span class='flex'>
+                {{ item.text }}
+              </span>
+              <span v-for="(item, index) in item.imageRight" v-bind:key="index" >
+                  <span v-bind:class="item.imgClass" v-bind:title="item.toolTip"></span>
+              </span>
             </span>
           </div>
           <div v-else>** not implemented **</div>
@@ -90,10 +97,10 @@ export default Vue.extend({
         display: this.show ? "inline-block" : "none"
       };
 
-      if (this._direction == DropDownDirection.DownRight || this._direction == DropDownDirection.UpRight)
-        styleBase.right = "0px";
+      if (this._direction == DropDownDirection.DownRight || this._direction == DropDownDirection.UpRight) 
+        styleBase.right = "-2px";
       else
-        styleBase.left = "0px";
+        styleBase.left = "-2px";
 
       return styleBase;
     }
@@ -172,6 +179,36 @@ $back-colour-right-img-hover: #bbbdc361;
   -webkit-flex: 1;
   flex: 1;
 }
+
+.img {
+  border: 1px solid transparent;
+  padding: 1px;
+  -webkit-transition: border 0.4s; /* Safari */
+  transition: border 0.4s;
+
+  &:hover {
+    border: 1px solid rgb(182, 182, 89);
+  }
+}
+
+.img-left {
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 1px;
+}
+
+.img-right {
+  margin-left: 0px;
+  margin-right: 3px;
+}
+
+// .flex-container {
+//   @include flexbox();
+// }
+
+// .flex-text {
+//   @include flexchild();
+// }
 
 .dda-container {
   position: absolute;
@@ -287,6 +324,7 @@ $back-colour-right-img-hover: #bbbdc361;
     vertical-align: middle;
     font-family: Roboto, sans-serif;
     font-size: $font-size;
+    text-align: left;
 
     > .flex {
       @include flexchild();

@@ -39,7 +39,7 @@ export default Vue.extend({
     Banner, DropDownMenu
   },
   created() {
-    this.myitems_dr = getTestItems("simple");
+    this.myitems_dr = getTestItems("logout");
     this.myitems_dl = getTestItems("logout-simple");
   }
 });

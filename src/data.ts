@@ -1,6 +1,6 @@
 import {
 	DropDownItemBase, HeaderItem, ActionItem,
-	OptionItem, SeperatorItem, DropDownDirection
+	SeperatorItem, CheckboxItem, RadioboxItem
 } from './components/DropDownItems';
 
 // Demo class - allow the sample to produce demo output quickly
@@ -12,7 +12,7 @@ const getItems = (context: string = '') => {
 		arr.push(new ActionItem("C", "Visit London"));
 	}
 	if (context == 'logout-simple') {
-		arr.push(new ActionItem("logout", "Logout", "mdi-exit-run"));
+		arr.push(new ActionItem("logout", "Logout", "mdi-exit-run", false, _ => alert(_.key)));
 		arr.push(new SeperatorItem());
 		arr.push(new ActionItem("profile", "Show Profile", "mdi-face"));
 		arr.push(new ActionItem("shortcuts", "Show Shortcuts", "mdi-access-point"));
@@ -35,25 +35,25 @@ const getItems = (context: string = '') => {
 	}
 	if (context == 'options-simple') {
 		arr.push(new HeaderItem("Choose your activities:"));
-		arr.push(new OptionItem("beach", "Visit the beach"));
-		arr.push(new OptionItem("town", "Walk through town"));
-		arr.push(new OptionItem("museum", "Visit musea"));
-		arr.push(new OptionItem("hirecar", "Hire a car"));
-		arr.push(new OptionItem("nothing", "Do absolutely nothing and less then that!"));
+		arr.push(new CheckboxItem("beach", "Visit the beach"));
+		arr.push(new CheckboxItem("town", "Walk through town"));
+		arr.push(new CheckboxItem("museum", "Visit musea"));
+		arr.push(new CheckboxItem("hirecar", "Hire a car"));
+		arr.push(new CheckboxItem("nothing", "Do absolutely nothing and less then that!"));
 	}
 	if (context == 'options') {
-		arr.push(new OptionItem("keyZ", "My Option 1", "A"));
-		arr.push(new OptionItem("keyA", "My Option 2", "A", true));
+		arr.push(new RadioboxItem("keyZ", "My Option 1", "A"));
+		arr.push(new RadioboxItem("keyA", "My Option 2", "A", true));
 		arr.push(new SeperatorItem());
-		arr.push(new ActionItem("keyB", "Take Action A"));
-		arr.push(new ActionItem("keyC", "Take Action B"));
+		arr.push(new ActionItem("keyX1", "Take Action X1"));
+		arr.push(new ActionItem("keyX2", "Take Action X2"));
 		arr.push(new SeperatorItem());
-		arr.push(new OptionItem("keyA2", "Buy Apples", "", true));
-		arr.push(new OptionItem("keyB2", "Buy Bananas", "", true));
-		arr.push(new OptionItem("keyC2", "Buy Pomegranates"));
+		arr.push(new CheckboxItem("keyA2", "Buy Apples", true));
+		arr.push(new CheckboxItem("keyB2", "Buy Bananas", true));
+		arr.push(new CheckboxItem("keyC2", "Buy Pomegranates"));
 		arr.push(new SeperatorItem());
-		arr.push(new OptionItem("keyO2", "Haarlem is the best place to live", "C"));
-		arr.push(new OptionItem("keyO3", "Amsterdam is the best place to live", "C"));
+		arr.push(new RadioboxItem("keyO2", "Haarlem is the best place to live", "C"));
+		arr.push(new RadioboxItem("keyO3", "Amsterdam is the best place to live", "C"));
 	}
 	if (context == "showcase") {
 		var item = new ActionItem("booknow", "Book now!", "fa-plane");
@@ -63,21 +63,21 @@ const getItems = (context: string = '') => {
 		arr.push(item);
 		arr.push(new SeperatorItem());
 		arr.push(new HeaderItem("Choose your destination:"));
-		arr.push(new OptionItem("california", "California and Santa Monica", "A"));
-		arr.push(new OptionItem("newyork", "New York", "A"));
-		arr.push(new OptionItem("miami", "Miami", "A"));
+		arr.push(new RadioboxItem("california", "California and Santa Monica", "A"));
+		arr.push(new RadioboxItem("newyork", "New York", "A"));
+		arr.push(new RadioboxItem("miami", "Miami", "A"));
 		arr.push(new SeperatorItem());
 		arr.push(new HeaderItem("Mode of transport:"));
-		arr.push(new OptionItem("car", "By car", "B"));
-		arr.push(new OptionItem("boat", "By boat", "B"));
-		arr.push(new OptionItem("plane", "By plane", "B"));
+		arr.push(new RadioboxItem("car", "By car", "B"));
+		arr.push(new RadioboxItem("boat", "By boat", "B", true));
+		arr.push(new RadioboxItem("plane", "By plane", "B"));
 		arr.push(new SeperatorItem());
 		arr.push(new HeaderItem("Choose your activities:"));
-		arr.push(new OptionItem("beach", "Visit the beach"));
-		arr.push(new OptionItem("town", "Walk through town"));
-		arr.push(new OptionItem("park", "Visit Parks"));
-		arr.push(new OptionItem("hirecar", "Hire a car"));
-		arr.push(new OptionItem("nothing", "Do absolutely nothing !"));
+		arr.push(new CheckboxItem("beach", "Visit the beach"));
+		arr.push(new CheckboxItem("town", "Walk through town"));
+		arr.push(new CheckboxItem("park", "Visit Parks"));
+		arr.push(new CheckboxItem("hirecar", "Hire a car"));
+		arr.push(new CheckboxItem("nothing", "Do absolutely nothing !"));
 	}
 	return arr;
 }

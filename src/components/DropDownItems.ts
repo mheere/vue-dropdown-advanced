@@ -10,56 +10,6 @@ export enum DropDownDirection {
     UpLeft,
 }
 
-export class Colour {
-    public colour: string = "";
-
-    constructor(colour: string) {
-        this.colour = colour;
-    }
-
-    render(h: any) {
-        return h("h1", "Error - please provide your own implementation!");
-    }
-}
-
-export class Orange extends Colour {
-    constructor() {
-        super("orange");
-    }
-
-    public getStyle() {
-        return {
-            class: ['example-class'],
-            style: { backgroundColor: this.colour, border: '3px solid red' }
-        }
-    }
-
-    render(h: any) {
-        return h('h4', this.getStyle(), "This is my colour: " + this.colour)
-    }
-}
-
-export class Blue extends Colour {
-    private _isDisabled = true;
-
-    constructor(disabled: boolean) {
-        super("lightblue");
-        this._isDisabled = disabled;
-    }
-
-    render(h: any) {
-        return h('div',
-            [
-                h('h4', {
-                    class: ['example-class', { 'is-disabled': this._isDisabled }],
-                    style: { backgroundColor: this.colour }
-                }, "Hello, I am " + this.colour)
-            ]
-        )
-    }
-}
-
-
 export class DropDownItemBase {
 
     public key: string = "";
@@ -77,8 +27,14 @@ export class DropDownItemBase {
     get isActionItem(): boolean {
         return this.constructor.toString() === ActionItem.toString();
     }
-    get isOptionItem(): boolean {
-        return this.constructor.toString() === OptionItem.toString();
+    // get isOptionItem(): boolean {
+    //     return this.constructor.toString() === OptionItem.toString();
+    // }
+    get isRadioboxItem(): boolean {
+        return this.constructor.toString() === RadioboxItem.toString();
+    }
+    get isCheckboxItem(): boolean {
+        return this.constructor.toString() === CheckboxItem.toString();
     }
     get isSeperatorItem(): boolean {
         return this.constructor.toString() === SeperatorItem.toString();
@@ -87,25 +43,25 @@ export class DropDownItemBase {
         return this.constructor.toString() === HeaderItem.toString();
     }
 
-    public asActionItem(item: any): ActionItem {
-        return (item as ActionItem)
-    }
+    // public asActionItem(item: any): ActionItem {
+    //     return (item as ActionItem)
+    // }
 
-    public asOptionItem(item: any): OptionItem {
-        return (item as OptionItem);
-    }
+    // public asOptionItem(item: any): OptionItem {
+    //     return (item as OptionItem);
+    // }
 
-    get ddclass(): string {
-        var classval = "";
-        if (this.isActionItem) classval = "action";
-        if (this.isOptionItem) classval = "option";
-        if (this.isSeperatorItem) classval = "seperator";
-        if (this.isHeaderItem) classval = "header";
+    // get ddclass(): string {
+    //     var classval = "";
+    //     if (this.isActionItem) classval = "action";
+    //     if (this.isOptionItem) classval = "option";
+    //     if (this.isSeperatorItem) classval = "seperator";
+    //     if (this.isHeaderItem) classval = "header";
 
-        if (this.isDisabled) classval += " disabled ";
+    //     if (this.isDisabled) classval += " disabled ";
         
-        return classval;
-    }
+    //     return classval;
+    // }
 
     // ensure a 'title' is set if the dropdown item is showing ellipses
     public setTitle(el: any, title: string) {
@@ -173,11 +129,10 @@ export class HeaderItem extends DropDownItemBase {
 export class ActionItem extends DropDownItemBase {
     public clicked: ((ai: ActionItem) => void) | undefined = undefined;
     public imageLeft: string = "";          // image (either fa or material)
-    public imageRight: RightImageInfo[] = [];   // image (either fa or material)
+    public imagesRight: RightImageInfo[] = [];   // image (either fa or material)
     public className: string = "";          // any additional className info that is appended to the <i> image element
     public clickedImage: string = "";       // the name of the image that raised the clicked event (was clicked)
     public textMarginRight: number = 0;     // if given (> 0) then this margin will be applied to the text portion (in order to create distance between the text and right image or right border)
-    public static useMaterialImage24: boolean = false;  // if set to true this will default to md-24 instead of md-18.
 
     constructor(key: string, text: string, image?: string, isDisabled?: boolean, clicked?: (ai: ActionItem) => void) {
         super(key, text);
@@ -197,32 +152,17 @@ export class ActionItem extends DropDownItemBase {
     // public isLeftImgFontAwesome(): boolean { return this.isImgFontAwesome(this.imageLeft) }
     // public isLeftImgMaterial(): boolean { return this.isImgMaterial(this.imageLeft) }
 
-    public addRightImage(img: string, toolTip?: string) { this.imageRight.push(new RightImageInfo(img, toolTip)); }
+    public addRightImage(img: string, toolTip?: string) { this.imagesRight.push(new RightImageInfo(img, toolTip)); }
 
     public ToString() {
         return `*ActionItem* ${this.text} [${this.key}]`;
     }
 
-    // public render(adjustLeftMargin?: string) {
-    //     var cn = "";
-    //     if (this.imageLeft.length == 0) 
-    //         cn = adjustLeftMargin;
-        
-    //     let style = {};
+    public click(items: DropDownItemBase[]): boolean {
+        if (this.clicked) this.clicked(this);
+        return true;
+    }
 
-    //     if (this.textMarginRight > 0)
-    //         style = { 
-    //             marginRight: this.textMarginRight + "px"
-    //         };
-
-    //     return (
-    //         <div className='dda-dropdown-item'>
-    //             { this.renderLeftImage() }
-    //             <span className={'flex ' + cn } ref={(el) => { this.setTitle(el, this.text); }} style={style}>{this.text}</span>
-    //             { this.renderRightImages() }
-    //         </div>
-    //     )
-    // }
     render(h: any) {
         // var myParagraphVNode = h('p', 'hi')
         // return h('div', [
@@ -236,43 +176,6 @@ export class ActionItem extends DropDownItemBase {
         )
     }
 
-    // private getMaterialClassName() {
-    //     if (this.className.includes("md-"))
-    //         return "material-icons " + this.className;
-    //     else
-    //         return "material-icons " + (ActionItem.useMaterialImage24 ? "md-24" : "md-18") + this.className;
-    // }
-
-    // private renderLeftImage() {
-    //     if (this.imageLeft.length == 0) return null;
-
-    //     if (this.isImgFontAwesome(this.imageLeft))
-    //         return (<i className={"img-left fa fa-fw " + this.imageLeft + " " + this.className} aria-hidden="true"></i>)
-    //     else if (this.isImgMaterial(this.imageLeft))
-    //         return (<i className={"img-left " + this.getMaterialClassName()} >{this.imageLeft}</i>)
-    //     else
-    //         return undefined;  
-    // }
-
-    // private renderRightImages() {
-    //     if (this.imageRight.length == 0) return null;
-    //     return this.imageRight.map((v, index) => this.renderRightImage(v, index));
-    // }
-
-    // private renderRightImage(image: RightImageInfo, i: number) {
-
-    //     const style: any = { 
-    //         title: image.toolTip
-    //     };
-
-    //     if (this.isImgFontAwesome(image.imageRight))
-    //         return (<i key={i} data-img-right={image.imageRight} title={image.toolTip} className={"img-right fa fa-fw " + image.imageRight + " " + this.className} aria-hidden="true" style={style}></i>)
-    //     else if (this.isImgMaterial(image.imageRight))
-    //         return (<i key={i} data-img-right={image.imageRight} title={image.toolTip} className={"img-right " + this.getMaterialClassName()}>{image.imageRight}</i>)
-    //     else
-    //         return undefined;
-    // }
-
 }
 
 export class RightImageInfo {
@@ -285,57 +188,65 @@ export class RightImageInfo {
     }
 
     get imgClass(): string {
-        return "img img-right mdi " + this.imageRight;
+        return "img img-border img-right mdi " + this.imageRight;
     }
 }
 
-
-// a 'checked' item - indicates a check/unchecked state - by default this toggles and does NOT close the dropdown
-export class OptionItem extends ActionItem {
+class CheckedItem extends ActionItem {
     public isChecked: boolean = false;      // 
     public groupBy: string = "";
 
-    constructor(key: string, text: string, groupBy: string = "", isChecked: boolean = false) {
+    public toString() {
+        return `*CheckedItem* ${this.text} [${this.key}] - ${this.isChecked} [groupBy: ${this.groupBy}]`;
+    }
+}
+
+// a 'checked' item - indicates a check/unchecked state
+export class CheckboxItem extends CheckedItem {
+
+    constructor(key: string, text: string, isChecked: boolean = false) {
         super(key, text);
         this.isChecked = isChecked;
-        this.groupBy = groupBy;
     }
 
-    public toggle() {
+    // return "img img-border img-right mdi " + this.imageRight;
+    get imgClass(): any {
+        let s = "img-check ";
+        if (this.isChecked ) s += " checked ";
+        return s;
+    }
+
+    public click(items: DropDownItemBase[]): boolean {
         this.isChecked = !this.isChecked;
+        return false;
+    }
+}
+
+// a 'checked' item - indicates a check/unchecked state
+export class RadioboxItem extends CheckedItem {
+
+    constructor(key: string, text: string, groupBy: string = "", isChecked: boolean = false) {
+        super(key, text);
+        this.groupBy = groupBy;
+        this.isChecked = isChecked;
+    }
+    
+    // return "img img-border img-right mdi " + this.imageRight;
+    get imgClass(): any {
+        let s = "img-check option";
+        if (this.isChecked ) s += " checked ";
+        return s;
     }
 
-    public toString() {
-        return `*OptionItem* ${this.text} [${this.key}] - ${this.isChecked} [groupBy: ${this.groupBy}]`;
-    }
+    public click(items: DropDownItemBase[]): boolean {
+        
+        items   
+            .filter((item: any) => item.isRadioboxItem && item.groupBy == this.groupBy)
+            .forEach((item: any) => item.isChecked = false);
 
-    // public render() {
-    //     return (
-    //         <div className='dda-dropdown-item' style={ { position: 'relative' } }>
-    //             <span className={"img-check " + (this.groupBy.length > 0 ? ' option ' : '') + (this.isChecked ? ' checked ' : '')}></span>
-    //             <span className='flex has-img' ref={(el) => { this.setTitle(el, this.text); }}>{this.text}</span>
-    //         </div>
-    //     )
-    // }
+        // check the incoming one (that was clicked)
+        this.isChecked = true;
 
-    public getStyleImage() {
-        return {
-            class: ['img-check', (this.groupBy.length > 0 ? ' option ' : ''), (this.isChecked ? ' checked ' : '')],
-            //style: { backgroundColor: this.colour, border: '3px solid red' }
-        }
-    }
-
-    render(h: any) {
-        // var myParagraphVNode = h('p', 'hi')
-        // return h('div', [
-        //     myParagraphVNode
-        // ])
-
-        return h('div', { class: ['dda-dropdown-item '] }, 
-            [
-                h('span', this.getStyleImage() ),
-                h('h4', { class: ['flex has-img '] }, this.text)
-            ]
-        )
+        return false;
     }
 }

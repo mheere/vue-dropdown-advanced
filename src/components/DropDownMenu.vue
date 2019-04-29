@@ -2,16 +2,18 @@
   <div class="dda-container" v-bind:style="getStyle" ref="mydd">
     <!-- <dropdown-toolbar v-bind:items="items"> </dropdown-toolbar> -->
       <div class="dda-dropdown-list">
-        <div v-for="(item) in items" v-bind:key="item.key" >
+        <div v-for="(item) in my_items" v-bind:key="item.key" >
+
           <div v-if="item.isSeperatorItem" class="seperator">
-            
           </div>
+
           <div v-else-if="item.isHeaderItem" class="header">
             <span class="dda-dropdown-item">
               {{ item.text }}
             </span>
           </div>
-          <div v-else-if="item.isActionItem" class="action">
+
+          <div v-else-if="item.isActionItem" class="action" v-on:click.stop.prevent="click(item)" >
             <span class="dda-dropdown-item">
               <span v-if="item.hasImg" >
                 <span v-bind:class="item.imgClass"></span>
@@ -19,12 +21,23 @@
               <span class='flex'>
                 {{ item.text }}
               </span>
-              <span v-for="(item, index) in item.imageRight" v-bind:key="index" >
-                  <span v-bind:class="item.imgClass" v-bind:title="item.toolTip"></span>
+              <span v-for="(imgItem, index) in item.imagesRight" v-bind:key="index" v-on:click.stop.prevent="click(item, imgItem)" >
+                  <span v-bind:class="imgItem.imgClass" v-bind:title="imgItem.toolTip"></span>
               </span>
             </span>
           </div>
+
+          <div v-else-if="item.isRadioboxItem || item.isCheckboxItem" class="option" v-on:click.stop.prevent="click(item)" >
+            <span class="dda-dropdown-item">
+                <span v-bind:class="item.imgClass"></span>
+              <span class='flex'>
+                {{ item.text }}
+              </span>
+            </span>
+          </div>
+
           <div v-else>** not implemented **</div>
+
         </div>
       </div>
   </div>
@@ -32,7 +45,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { ActionItem, DropDownItemBase, DropDownDirection } from "./DropDownItems";
+import { ActionItem, DropDownItemBase, DropDownDirection, RightImageInfo } from "./DropDownItems";
 import { getCoords } from "../utils";
 import '@mdi/font/css/materialdesignicons.css';
 
@@ -52,27 +65,39 @@ Vue.component("dropdown-toolbar", {
 export class MyData {
   public $element: any = null;
   public show: boolean = false;
-  public _direction: DropDownDirection = DropDownDirection.DownRight;
-  // public mystyle: any = {
-  //   position: "absolute" as "absolute",
-  //   top: '5px',
-  //   left: "0px",
-  //   //display: this.show ? 'inline-block' :'none'
-  // };
-  //public items: DropDownItemBase[] = [];
+  public my_direction: DropDownDirection = DropDownDirection.DownRight;
+  public my_items: DropDownItemBase[] = [];
+}
+
+export class DropDownInfo {
+  constructor(item: ActionItem, items: DropDownItemBase[], imageOnRight: RightImageInfo) {
+    this.item = item;
+    this.items = items;
+    this.imageOnRight = imageOnRight;
+  }
+  public item: ActionItem = undefined;
+  public items: DropDownItemBase[] = [];
+  public imageOnRight: RightImageInfo = undefined;
 }
 
 export default Vue.extend({
   name: "DropDownMenu",
-  props: ["items", "direction"],
+  props: ["items", "itemsAsync", "onClick", "direction"],
   data: () => new MyData(),
   methods: {
-    // getDropDownClass() {
-    //     if (this._direction == DropDownDirection.DownLeft) return "down-left";
-    //     if (this._direction == DropDownDirection.DownRight) return "down-right";
-    //     if (this._direction == DropDownDirection.UpLeft) return "up-left";
-    //     if (this._direction == DropDownDirection.UpRight) return "up-right";
-    // },
+    click(item: ActionItem, rightImgInfo: RightImageInfo = undefined) {
+      
+      // pass the click instruction down to the implementer
+      let closeDrowDown = item.click(this.my_items);
+
+      // if implementer wants us to close the dropdown then do so
+      if (closeDrowDown)
+        this.show = false;
+      
+      // if a click handler is given for the entire dropdown then call it with full info
+      if (this.onClick) 
+        this.onClick( new DropDownInfo(item, this.my_items, rightImgInfo));
+    },
     getCoords() {
       let el = this.$element;
       if (!el) return {};
@@ -81,8 +106,29 @@ export default Vue.extend({
     },
     close (e: any) {
       if (!this.$element.contains(e.target)) {
-        this.show = false
+        //this.show = false
+        this.toggle();
       }
+    },
+    toggle() {
+      // let xx = () => (this.show = !this.show);
+      // xx = xx.bind(this);
+      this.show = !this.show
+
+      // if we have an async retrieval of items then invoke it here
+      if (this.show) {
+        if (this.items) {
+          this.my_items = this.items;
+        }
+
+        else if (this.itemsAsync)  {
+          this.itemsAsync().then(_items => this.my_items = _items);
+        }
+      }
+      else {
+        this.my_items = [];
+      }
+
     }
   },
   computed: {
@@ -90,68 +136,88 @@ export default Vue.extend({
       let coords: any = this.getCoords();
       if (!coords) return {};
 
+      let elHeightPx = coords.height + "px";
+
       // define the style for this cell
       let styleBase: any = {
         position: "absolute" as "absolute",
-        top: coords.height + "px",
         display: this.show ? "inline-block" : "none"
       };
 
-      if (this._direction == DropDownDirection.DownRight || this._direction == DropDownDirection.UpRight) 
-        styleBase.right = "-2px";
-      else
+      let x1 = DropDownDirection.UpLeft;
+      let x2 = DropDownDirection.UpRight;
+
+      if (this.my_direction == DropDownDirection.DownRight || this.my_direction == DropDownDirection.UpRight) 
         styleBase.left = "-2px";
+
+      if (this.my_direction == DropDownDirection.DownLeft || this.my_direction == DropDownDirection.UpLeft) 
+        styleBase.right = "-2px";
+
+      if (this.my_direction == DropDownDirection.UpLeft || this.my_direction == DropDownDirection.UpRight) 
+        styleBase.bottom = elHeightPx;
+
+      if (this.my_direction == DropDownDirection.DownLeft || this.my_direction == DropDownDirection.DownRight) 
+        styleBase.top = elHeightPx;
 
       return styleBase;
     }
   },
   watch: {
     show: function(newValue: boolean) {
-      if (newValue) 
+
+      console.log("newV: ", newValue);
+
+      if (newValue) {
         document.addEventListener('click', this.close);
+
+        // // if we have an async retrieval of items then invoke it here
+        // if (this.items) 
+        //   this.my_items = this.items;
+
+        // else if (this.itemsAsync) 
+        //   this.itemsAsync().then(items => this.my_items = items);
+
+      }
       else
-        document.removeEventListener('click',this.close)
+        document.removeEventListener('click', this.close)
+
+        // remove any items if we are closing the dropdown 
+        // this.my_items = [];
+          
     }
   },
   components: {},
   mounted() {
-    //debugger;
+
+    this.my_items = this.items;
+    
+    // 
     let el: any = this.$refs.mydd;
     this.$element = el.parentElement;
 
     // check if a direction was given
-    this._direction = DropDownDirection.DownLeft;   // set default
-    if (this.direction == "down-right") this._direction = DropDownDirection.DownRight;
-    else if (this.direction == "up-left") this._direction = DropDownDirection.UpLeft;
-    else if (this.direction == "up-right") this._direction = DropDownDirection.UpRight;
+    this.my_direction = DropDownDirection.DownRight;   // set default
+    if (this.direction == "down-left") this.my_direction = DropDownDirection.DownLeft;
+    else if (this.direction == "up-left") this.my_direction = DropDownDirection.UpLeft;
+    else if (this.direction == "up-right") this.my_direction = DropDownDirection.UpRight;
 
     // if the source element does not have a 'position' set then we'll set it to 'relative'
     var posNotSet =
       this.$element.position == "" || this.$element.position == "static";
     if (!posNotSet)
-      // && this.props.setRelativePosition)
       this.$element.style.position = "relative";
 
-    //var posRelative = sourceElStyle.position == "relative";
-    //var posAbsolute = sourceElStyle.position == "absolute";
-
-    //this.$element
-
-    //this.mystyle.top = this.$element.offsetHeight + "px";
-
-    let xx = () => (this.show = !this.show);
-    xx = xx.bind(this);
-
-    this.$element.addEventListener("click", xx);
+    // listen for 'clicks' on the given parent element which shows the dropdown
+    this.$element.addEventListener("click", this.toggle);
   },
   beforeDestroy () {
-    
+    this.$element.addEventListener("click", this.toggle);
   }
 });
 </script>
 
 <style lang="scss" scoped>
-$item-height: 32px;
+$item-height: 30px;
 $font-size: 14px;
 $border-colour: rgb(194, 194, 195);
 $border-colour-item: rgba(194, 194, 195, 0.5);
@@ -181,11 +247,13 @@ $back-colour-right-img-hover: #bbbdc361;
 }
 
 .img {
-  border: 1px solid transparent;
   padding: 1px;
   -webkit-transition: border 0.4s; /* Safari */
   transition: border 0.4s;
+}
 
+.img-border {
+  border: 1px solid transparent;
   &:hover {
     border: 1px solid rgb(182, 182, 89);
   }
@@ -294,8 +362,8 @@ $back-colour-right-img-hover: #bbbdc361;
     }
 
     .img-check {
-      margin-top: 11px;
-      margin-left: 6px;
+      margin-top: 9px;
+      margin-left: 3px;
       margin-right: 4px;
       width: 11px;
       height: 11px;

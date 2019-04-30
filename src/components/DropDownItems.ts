@@ -1,6 +1,4 @@
 
-//import Vue from 'vue';
-//import { DropDownMenu } from './DropDownMenu';
 import { createGuidRight5, instanceOf }   from '../utils';
 
 export enum DropDownDirection {
@@ -44,20 +42,13 @@ export class DropDownItemBase {
         return instanceOf(this, HeaderItem);
     }
 
-    get mainClass(): string {
+    get getClass(): string {
         let xx = this.baseClassName;
         if (this.isActionItem) xx += " action"
         if (this.isRadioboxItem) xx += " radiobox"
         if (this.isCheckboxItem) xx += " checkbox"
         if (this.isDisabled) xx += " disabled"
         return xx;
-    }
-
-    // public render(adjustLeftMargin?: string): JSX.Element {
-    //     return (<span className='dda-dropdown-item'>not implemented</span>)
-    // }
-    render(h: any) {
-        return h("h1", "Error - please provide your own implementation!");
     }
 }
 
@@ -72,14 +63,6 @@ export class SeperatorItem extends DropDownItemBase {
             class: ['da-dropdown-item seperator']
         }
     }
-
-    // public render() {
-    //     return <span className='dda-dropdown-item seperator'></span>
-    // }
-    render(h: any) {
-        return h('span', this.getStyle())
-    }
-
 }
 
 export class HeaderItem extends DropDownItemBase {
@@ -93,24 +76,13 @@ export class HeaderItem extends DropDownItemBase {
             class: ['dda-dropdown-item ']
         }
     }
-
-    // public render() {
-    //     return <span className='dda-dropdown-item' ref={(el) => { this.setTitle(el, this.header); }}>{this.header}</span>
-    // }
-    render(h: any) {
-        return h('span', this.getStyle(), this.text)
-    }
-
 }
 
 // probably the most often used Item - by default the dropdown closes onClick
 export class ActionItem extends DropDownItemBase {
     public clicked: ((ai: ActionItem) => void) | undefined = undefined;
-    public imageLeft: string = "";          // image (either fa or material)
-    public imagesRight: RightImageInfo[] = [];   // image (either fa or material)
-    //public className: string = "";          // any additional className info that is appended to the <i> image element
-    public clickedImage: string = "";       // the name of the image that raised the clicked event (was clicked)
-    public textMarginRight: number = 0;     // if given (> 0) then this margin will be applied to the text portion (in order to create distance between the text and right image or right border)
+    public imageLeft: string = "";              // image (either fa or material)
+    public imagesRight: RightImageInfo[] = [];  // image (either fa or material)
 
     constructor(key: string, text: string, image?: string, isDisabled?: boolean, clicked?: (ai: ActionItem) => void) {
         super(key, text, "action");
@@ -125,10 +97,6 @@ export class ActionItem extends DropDownItemBase {
         return "img img-left mdi " + this.imageLeft;
     }
 
-    // get mainClass(): string {
-    //     return "action " + this.isDisabled ? 'disabled' : '';
-    // }
-
     public addRightImage(img: string, toolTip?: string) { this.imagesRight.push(new RightImageInfo(img, toolTip)); }
 
     public ToString() {
@@ -140,23 +108,10 @@ export class ActionItem extends DropDownItemBase {
         if (this.clicked) this.clicked(this);
         return true;
     }
-
-    render(h: any) {
-        // var myParagraphVNode = h('p', 'hi')
-        // return h('div', [
-        //     myParagraphVNode
-        // ])
-
-        return h('div', { class: ['dda-dropdown-item '] }, 
-            [
-                h('h4', this.text)
-            ]
-        )
-    }
 }
 
 class CheckedItem extends ActionItem {
-    public isChecked: boolean = false;      // 
+    public isChecked: boolean = false; 
     public groupBy: string = "";
 
     public toString() {

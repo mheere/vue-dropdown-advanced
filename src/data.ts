@@ -27,7 +27,7 @@ const getItems = (context: string = '') => {
 		arr.push(new SeperatorItem());
 		item = new ActionItem("profile", "Show User Profile", "mdi-face");
 		item.addRightImage("fa-mail-forward", "forward this item");
-		item.textMarginRight = 32;
+		//item.textMarginRight = 32;
 		arr.push(item);
 		arr.push(new ActionItem("bell", "Show outstanding alerts", "mdi-bell-ring"));
 		arr.push(new ActionItem("shortcuts", "Show Bitcoin Valuation", "mdi-bitcoin"));

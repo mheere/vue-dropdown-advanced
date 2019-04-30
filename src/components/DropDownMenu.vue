@@ -3,7 +3,7 @@
     <!-- <dropdown-toolbar v-bind:items="items"> </dropdown-toolbar> -->
       <div class="dda-dropdown-list">
         <div v-for="(item) in my_items" 
-          :class="item.mainClass"
+          :class="item.getClass"
           :key="item.key" 
           @click.stop.prevent="click(item)">
 
@@ -18,7 +18,7 @@
               <span class='flex' >
                 {{ item.text }}
               </span>
-              <span v-for="(imgItem, index) in item.imagesRight" v-bind:key="index" v-on:click.stop.prevent="click(item, imgItem)" >
+              <span v-for="(imgItem, index) in item.imagesRight" :key="index" @click.stop.prevent="click(item, imgItem)">
                   <span v-bind:class="imgItem.imgClass" v-bind:title="imgItem.toolTip"></span>
               </span>
           </div>
@@ -41,18 +41,6 @@ import { ActionItem, DropDownItemBase, DropDownDirection, RightImageInfo } from 
 import { getCoords } from "../utils";
 import '@mdi/font/css/materialdesignicons.css';
 
-// Vue.component("dropdown-toolbar", {
-//   props: ["items"],
-//   render(h: any) {
-//     return h(
-//       "div",
-//       this.items.map(function(item: any) {
-//         return item.render(h);
-//       })
-//     );
-//   }
-// });
-
 // little trick bypass bl** typescript checking of $element....
 export class MyData {
   public $element: any = null;
@@ -74,7 +62,27 @@ export class DropDownInfo {
 
 export default Vue.extend({
   name: "DropDownMenu",
-  props: ["items", "itemsAsync", "onClick", "direction"],
+  //props: ["items", "itemsAsync", "onClick", "direction"],
+  props: {
+    items: {
+      type: Array,
+      default: function () {
+        return [];
+      }
+    },
+    itemsAsync: {
+      type: Function
+    },
+    onClick: {
+      type: Function
+    },
+    direction: {
+      type: [ String, Number ],
+      default: function () {
+        return 0;
+      }
+    }
+  },
   data: () => new MyData(),
   methods: {
     click(item: ActionItem, rightImgInfo: RightImageInfo = undefined) {
@@ -109,10 +117,12 @@ export default Vue.extend({
       this.$nextTick( _ => this.setTitleAttributesIfNeccesary());
     },
     setTitleAttributesIfNeccesary() {
+      // get a list of all the 'text's from the all items
       let elementList = this.$element.querySelectorAll("div.dda-dropdown-list .flex");
       elementList.forEach(el => {
-        el.setAttribute('title', "");
+        el.setAttribute('title', "");   // first clear 
 
+        // trick to check if the content would require a scroll
         if (el.offsetWidth < el.scrollWidth)  
             el.setAttribute('title', el.innerText);
       });  
@@ -123,23 +133,23 @@ export default Vue.extend({
 
       // if we have an async retrieval of items then invoke it here
       if (this.show) {
-        if (this.items) {
-          this.setDropDownItems(this.items);
-        }
-
-        else if (this.itemsAsync)  {
+        
+        // if the user has given an async method then call this
+        if (this.itemsAsync)  {
           let myitems = await this.itemsAsync();
           
-          // important! - after await we have to make sure that we are 
-          // still wishing to show the items!
-          if (this.show)
+          if (this.show)  // important! - after await we have to make sure that we are still wishing to show the items!
             this.setDropDownItems(myitems);
+        }
+        else if (this.items) {
+          // user gave a list
+          this.setDropDownItems(this.items);
         }
       }
       else {
+        // clear out the list of items
         this.setDropDownItems([]);
       }
-
     }
   },
   computed: {
@@ -147,7 +157,8 @@ export default Vue.extend({
       let coords: any = this.getCoords();
       if (!coords) return {};
 
-      let elHeightPx = coords.height + "px";
+      // define the height of the element we are attached to
+      let elHeightWithPx = coords.height + "px";
 
       // define the style for this cell
       let styleBase: any = {
@@ -155,17 +166,15 @@ export default Vue.extend({
         display: this.show ? "inline-block" : "none"
       };
 
+      // adjust the style based on the required orientation (direction)
       if (this.my_direction == DropDownDirection.DownRight || this.my_direction == DropDownDirection.UpRight) 
         styleBase.left = "-2px";
-
       if (this.my_direction == DropDownDirection.DownLeft || this.my_direction == DropDownDirection.UpLeft) 
         styleBase.right = "-2px";
-
       if (this.my_direction == DropDownDirection.UpLeft || this.my_direction == DropDownDirection.UpRight) 
-        styleBase.bottom = elHeightPx;
-
+        styleBase.bottom = elHeightWithPx;
       if (this.my_direction == DropDownDirection.DownLeft || this.my_direction == DropDownDirection.DownRight) 
-        styleBase.top = elHeightPx;
+        styleBase.top = elHeightWithPx;
 
       return styleBase;
     }
@@ -187,11 +196,18 @@ export default Vue.extend({
     let el: any = this.$refs.mydd;
     this.$element = el.parentElement;
 
+    // set the default
+    this.my_direction = DropDownDirection.DownRight; 
+
     // check if a direction was given
-    this.my_direction = DropDownDirection.DownRight;   // set default
-    if (this.direction == "down-left") this.my_direction = DropDownDirection.DownLeft;
-    else if (this.direction == "up-left") this.my_direction = DropDownDirection.UpLeft;
-    else if (this.direction == "up-right") this.my_direction = DropDownDirection.UpRight;
+    if (typeof this.direction === "string") {
+      if (this.direction == "down-left") this.my_direction = DropDownDirection.DownLeft;
+      else if (this.direction == "up-left") this.my_direction = DropDownDirection.UpLeft;
+      else if (this.direction == "up-right") this.my_direction = DropDownDirection.UpRight;
+    }
+    else if (this.direction) {
+      this.my_direction = this.direction;
+    }
 
     // if the source element does not have a 'position' set then we'll set it to 'relative'
     var posNotSet =

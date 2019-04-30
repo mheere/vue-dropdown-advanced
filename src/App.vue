@@ -14,7 +14,7 @@
         <drop-down-menu v-bind:itemsAsync="getAsyncItems" :onClick="this.onClick">  </drop-down-menu>
       </div>
 
-      <div class='button example-dl'>
+      <div class='button example-dl' style='display: absolute'>
         Example Down Left
         <drop-down-menu v-bind:items="myitems_dl" :onClick="this.onClick" direction="down-left">  </drop-down-menu>
       </div>
@@ -43,8 +43,9 @@
 import Vue from 'vue';
 import Banner from "./components/Banner.vue";
 import DropDownMenu, { DropDownInfo } from "./components/DropDownMenu.vue";
-import { DropDownItemBase, ActionItem, HeaderItem } from "./components/DropDownItems";
+import { DropDownItemBase, ActionItem, HeaderItem, DropDownDirection } from "./components/DropDownItems";
 import { getTestItems } from './data';
+import { delay } from './utils';
 
 export default Vue.extend({
   name: "app",
@@ -69,7 +70,6 @@ export default Vue.extend({
         console.log(msg);
       },
       async getAsyncItems() {
-        const delay = time => new Promise(res=>setTimeout(()=>res(),time));
         await delay(1000);
         return this.myitems_dr;
       }

@@ -1,7 +1,7 @@
 
 //import Vue from 'vue';
 //import { DropDownMenu } from './DropDownMenu';
-import { createGuidRight5 }   from '../utils';
+import { createGuidRight5, instanceOf }   from '../utils';
 
 export enum DropDownDirection {
     DownRight,
@@ -16,31 +16,41 @@ export class DropDownItemBase {
     public text: string = "";
     public isDisabled: boolean = false;
     public data: any = undefined;           // allow any object to be associated with this item - quite handy!
+    public baseClassName: string = ""; 
 
-    constructor(key: string = "", text: string = "") {
+    constructor(key: string = "", text: string = "", className: string = "") {
         // if no key was given then we will allocate one
         if (!key) key = createGuidRight5();
+
+        // hand them over
         this.key = key;
         this.text = text;
+        this.baseClassName = className;
     }
 
     get isActionItem(): boolean {
-        return this.constructor.toString() === ActionItem.toString();
+        return instanceOf(this, ActionItem);
     }
-    // get isOptionItem(): boolean {
-    //     return this.constructor.toString() === OptionItem.toString();
-    // }
     get isRadioboxItem(): boolean {
-        return this.constructor.toString() === RadioboxItem.toString();
+        return instanceOf(this, RadioboxItem);
     }
     get isCheckboxItem(): boolean {
-        return this.constructor.toString() === CheckboxItem.toString();
+        return instanceOf(this, CheckboxItem);
     }
     get isSeperatorItem(): boolean {
-        return this.constructor.toString() === SeperatorItem.toString();
+        return instanceOf(this, SeperatorItem);
     }
     get isHeaderItem(): boolean {
-        return this.constructor.toString() === HeaderItem.toString();
+        return instanceOf(this, HeaderItem);
+    }
+
+    get mainClass(): string {
+        let xx = this.baseClassName;
+        if (this.isActionItem) xx += " action"
+        if (this.isRadioboxItem) xx += " radiobox"
+        if (this.isCheckboxItem) xx += " checkbox"
+        if (this.isDisabled) xx += " disabled"
+        return xx;
     }
 
     // public render(adjustLeftMargin?: string): JSX.Element {
@@ -54,7 +64,7 @@ export class DropDownItemBase {
 export class SeperatorItem extends DropDownItemBase {
 
     constructor() {
-        super();
+        super("", "", "seperator");
     }
 
     public getStyle() {
@@ -75,7 +85,7 @@ export class SeperatorItem extends DropDownItemBase {
 export class HeaderItem extends DropDownItemBase {
 
     constructor(header: string) {
-        super("", header);
+        super("", header, "header");
     }
 
     public getStyle() {
@@ -93,18 +103,17 @@ export class HeaderItem extends DropDownItemBase {
 
 }
 
-
 // probably the most often used Item - by default the dropdown closes onClick
 export class ActionItem extends DropDownItemBase {
     public clicked: ((ai: ActionItem) => void) | undefined = undefined;
     public imageLeft: string = "";          // image (either fa or material)
     public imagesRight: RightImageInfo[] = [];   // image (either fa or material)
-    public className: string = "";          // any additional className info that is appended to the <i> image element
+    //public className: string = "";          // any additional className info that is appended to the <i> image element
     public clickedImage: string = "";       // the name of the image that raised the clicked event (was clicked)
     public textMarginRight: number = 0;     // if given (> 0) then this margin will be applied to the text portion (in order to create distance between the text and right image or right border)
 
     constructor(key: string, text: string, image?: string, isDisabled?: boolean, clicked?: (ai: ActionItem) => void) {
-        super(key, text);
+        super(key, text, "action");
         this.imageLeft = image || "";
         this.isDisabled = isDisabled || false;
         this.clicked = clicked;
@@ -116,6 +125,10 @@ export class ActionItem extends DropDownItemBase {
         return "img img-left mdi " + this.imageLeft;
     }
 
+    // get mainClass(): string {
+    //     return "action " + this.isDisabled ? 'disabled' : '';
+    // }
+
     public addRightImage(img: string, toolTip?: string) { this.imagesRight.push(new RightImageInfo(img, toolTip)); }
 
     public ToString() {
@@ -123,6 +136,7 @@ export class ActionItem extends DropDownItemBase {
     }
 
     public click(items: DropDownItemBase[]): boolean {
+        if (this.isDisabled) return false;
         if (this.clicked) this.clicked(this);
         return true;
     }
@@ -141,20 +155,6 @@ export class ActionItem extends DropDownItemBase {
     }
 }
 
-export class RightImageInfo {
-    public imageRight: string = "";
-    public toolTip: string = "";
-
-    constructor(img: string, toolTip?: string) {
-        this.imageRight = img;
-        this.toolTip = toolTip || "";
-    }
-
-    get imgClass(): string {
-        return "img img-border img-right mdi " + this.imageRight;
-    }
-}
-
 class CheckedItem extends ActionItem {
     public isChecked: boolean = false;      // 
     public groupBy: string = "";
@@ -168,7 +168,7 @@ class CheckedItem extends ActionItem {
 export class CheckboxItem extends CheckedItem {
 
     constructor(key: string, text: string, isChecked: boolean = false) {
-        super(key, text);
+        super(key, text, "checkbox");
         this.isChecked = isChecked;
     }
 
@@ -180,6 +180,7 @@ export class CheckboxItem extends CheckedItem {
     }
 
     public click(items: DropDownItemBase[]): boolean {
+        if (this.isDisabled) return false;
         this.isChecked = !this.isChecked;
         return false;
     }
@@ -189,7 +190,7 @@ export class CheckboxItem extends CheckedItem {
 export class RadioboxItem extends CheckedItem {
 
     constructor(key: string, text: string, groupBy: string = "", isChecked: boolean = false) {
-        super(key, text);
+        super(key, text, "radiobox");
         this.groupBy = groupBy;
         this.isChecked = isChecked;
     }
@@ -203,6 +204,8 @@ export class RadioboxItem extends CheckedItem {
 
     public click(items: DropDownItemBase[]): boolean {
         
+        if (this.isDisabled) return false;
+
         items   
             .filter((item: any) => item.isRadioboxItem && item.groupBy == this.groupBy)
             .forEach((item: any) => item.isChecked = false);
@@ -211,5 +214,20 @@ export class RadioboxItem extends CheckedItem {
         this.isChecked = true;
 
         return false;
+    }
+}
+
+
+export class RightImageInfo {
+    public imageRight: string = "";
+    public toolTip: string = "";
+
+    constructor(img: string, toolTip?: string) {
+        this.imageRight = img;
+        this.toolTip = toolTip || "";
+    }
+
+    get imgClass(): string {
+        return "img img-border img-right mdi " + this.imageRight;
     }
 }

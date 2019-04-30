@@ -70,7 +70,7 @@ export default Vue.extend({
       },
       async getAsyncItems() {
         const delay = time => new Promise(res=>setTimeout(()=>res(),time));
-        await delay(2000);
+        await delay(1000);
         return this.myitems_dr;
       }
   },

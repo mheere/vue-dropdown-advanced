@@ -2,19 +2,16 @@
   <div class="dda-container" v-bind:style="getStyle" ref="mydd">
     <!-- <dropdown-toolbar v-bind:items="items"> </dropdown-toolbar> -->
       <div class="dda-dropdown-list">
-        <div v-for="(item) in my_items" v-bind:key="item.key" >
+        <div v-for="(item) in my_items" 
+          :class="item.mainClass"
+          :key="item.key" 
+          @click.stop.prevent="click(item)">
 
-          <div v-if="item.isSeperatorItem" class="seperator">
-          </div>
-
-          <div v-else-if="item.isHeaderItem" class="header">
-            <span class="dda-dropdown-item">
+          <div v-if="item.isHeaderItem" class="dda-dropdown-item">
               {{ item.text }}
-            </span>
           </div>
 
-          <div v-else-if="item.isActionItem" class="action" v-on:click.stop.prevent="click(item)" >
-            <span class="dda-dropdown-item">
+          <div v-else-if="item.isActionItem" class="dda-dropdown-item"  >
               <span v-if="item.hasImg" >
                 <span v-bind:class="item.imgClass"></span>
               </span>
@@ -24,19 +21,14 @@
               <span v-for="(imgItem, index) in item.imagesRight" v-bind:key="index" v-on:click.stop.prevent="click(item, imgItem)" >
                   <span v-bind:class="imgItem.imgClass" v-bind:title="imgItem.toolTip"></span>
               </span>
-            </span>
           </div>
 
-          <div v-else-if="item.isRadioboxItem || item.isCheckboxItem" class="option" v-on:click.stop.prevent="click(item)" >
-            <span class="dda-dropdown-item">
-                <span v-bind:class="item.imgClass"></span>
+          <div v-else-if="item.isRadioboxItem || item.isCheckboxItem" class="dda-dropdown-item" >
+              <span v-bind:class="item.imgClass"></span>
               <span class='flex'>
                 {{ item.text }}
               </span>
-            </span>
           </div>
-
-          <div v-else>** not implemented **</div>
 
         </div>
       </div>
@@ -49,17 +41,17 @@ import { ActionItem, DropDownItemBase, DropDownDirection, RightImageInfo } from 
 import { getCoords } from "../utils";
 import '@mdi/font/css/materialdesignicons.css';
 
-Vue.component("dropdown-toolbar", {
-  props: ["items"],
-  render(h: any) {
-    return h(
-      "div",
-      this.items.map(function(item: any) {
-        return item.render(h);
-      })
-    );
-  }
-});
+// Vue.component("dropdown-toolbar", {
+//   props: ["items"],
+//   render(h: any) {
+//     return h(
+//       "div",
+//       this.items.map(function(item: any) {
+//         return item.render(h);
+//       })
+//     );
+//   }
+// });
 
 // little trick bypass bl** typescript checking of $element....
 export class MyData {
@@ -86,6 +78,9 @@ export default Vue.extend({
   data: () => new MyData(),
   methods: {
     click(item: ActionItem, rightImgInfo: RightImageInfo = undefined) {
+
+      // if item is disabled then stop
+      if (item.isHeaderItem || item.isSeperatorItem || item.isDisabled) return;
       
       // pass the click instruction down to the implementer
       let closeDrowDown = item.click(this.my_items);
@@ -106,7 +101,6 @@ export default Vue.extend({
     },
     close (e: any) {
       if (!this.$element.contains(e.target)) {
-        //this.show = false
         this.toggle();
       }
     },
@@ -161,9 +155,6 @@ export default Vue.extend({
         display: this.show ? "inline-block" : "none"
       };
 
-      let x1 = DropDownDirection.UpLeft;
-      let x2 = DropDownDirection.UpRight;
-
       if (this.my_direction == DropDownDirection.DownRight || this.my_direction == DropDownDirection.UpRight) 
         styleBase.left = "-2px";
 
@@ -181,9 +172,7 @@ export default Vue.extend({
   },
   watch: {
     show: function(newValue: boolean) {
-
-      console.log("newV: ", newValue);
-
+      
       if (newValue) 
         document.addEventListener('click', this.close);
       
@@ -288,10 +277,10 @@ $back-colour-right-img-hover: #bbbdc361;
   box-shadow: rgb(202, 202, 183) 0px 0px 10px 1px;
   @include border-box();
 
-  &.show > .dda-dropdown-list {
-    display: block;
-    text-align: left;
-  }
+  // &.show > .dda-dropdown-list {
+  //   display: block;
+  //   text-align: left;
+  // }
 
   .dda-dropdown-list {
     max-width: 200px;
@@ -299,17 +288,45 @@ $back-colour-right-img-hover: #bbbdc361;
     border: 2px solid $border-colour;
     overflow-y: auto;
     overflow-x: hidden;
-    // display: none;
     @include border-box();
+
+    & .action, .radiobox, .checkbox 
+    {
+      cursor: pointer;
+
+      &:hover {
+        background: $back-colour-hover;
+      }
+    }
+
+    & .disabled {
+      color: #ababab;
+      background-color: #ebebeb0a;
+      cursor: default;
+    }
+
+    & .seperator {
+      height: 3px;
+      background-color: #efebeb;
+    }
+
+    & .header {
+      line-height: 31px !important;
+      background-color: #adadad;
+      color: white;
+      padding-left: 5px;
+    }
 
     & i {
       width: 20px;
       height: 20px;
       margin-top: 6px;
       line-height: 20px;
+
       &.img-left {
         margin-top: 6px;
       }
+
       &.material-icons {
         margin-right: 6px;
         margin-left: 5px;
@@ -327,41 +344,7 @@ $back-colour-right-img-hover: #bbbdc361;
       -webkit-transition: background 0.2s; /* Safari */
       transition: background 0.2s;
       white-space: nowrap;
-
-      &:hover {
-        background: $back-colour-hover;
-      }
-
-      & .action {
-        cursor: pointer;
-      }
-
-      & .option {
-        cursor: pointer;
-      }
-
-      & .disabled {
-        color: #ababab;
-        background-color: #ebebeb0a;
-        cursor: default;
-      }
-
-      & .seperator {
-        height: 3px;
-        background-color: #efebeb;
-      }
-
-      & .header {
-        line-height: 31px !important;
-        background-color: #adadad;
-        color: white;
-        cursor: default;
-        padding-left: 5px;
-      }
-
-      // & :last-child {
-      //   border-bottom: 0px;
-      // }
+      cursor: default;
     }
 
     .img-check {
@@ -428,88 +411,4 @@ $back-colour-right-img-hover: #bbbdc361;
   }
 }
 
-// .drop-down-menu {
-//   z-index: 3;
-//   color: #3b405f;
-//   box-shadow: #cacab7 0px 0px 10px 1px;
-//   box-sizing: border-box;
-
-//   @include border-box();
-// }
-
-// .drop-down-item {
-//   width: 100%;
-//   line-height: 19px;
-//   background: white;
-//   border-bottom: solid 1px rgba(194, 194, 195, 0.5);
-//   box-sizing: border-box;
-//   -moz-box-sizing: border-box;
-//   -webkit-transition: background 0.2s;
-//   transition: background 0.2s;
-//   padding: 5px;
-//   font-size: smaller;
-//   text-align: left;
-//   margin-left: 4px;
-//   margin-right: 4px;
-//   text-overflow: ellipsis;
-//   white-space: nowrap;
-//   overflow: hidden;
-
-//   display: flex;
-//   white-space: nowrap;
-//   text-overflow: ellipsis;
-//   overflow: hidden;
-//   padding-left: 2px;
-//   padding-right: 4px;
-//   line-height: 32px;
-//   vertical-align: middle;
-//   font-family: Roboto,sans-serif;
-//   font-size: 14px;
-
-//   &:hover {
-//       background: $back-colour-hover;
-//   }
-
-//   & .action {
-//       cursor:pointer;
-//   }
-
-//   &.option {
-//       cursor:pointer;
-//   }
-
-//   &.disabled {
-//       color: #ababab;
-//       background-color: #ebebeb0a;
-//       cursor: default;
-//   }
-
-//   &.seperator {
-//       height: 3px;
-//       background-color: #efebeb;
-//   }
-
-//   & .header {
-//       line-height: 21px !important;
-//       background-color: #adadad;
-//       color: white;
-//       cursor: default;
-//       padding-left: 5px;
-//   }
-
-//   &:last-child {
-//       border-bottom: 0px;
-//   }
-
-// }
-
-// .is-header {
-//   padding: 3px;
-//   background: beige;
-// }
-
-// .is-action {
-//   padding: 3px;
-//   background: white;
-// }
 </style>

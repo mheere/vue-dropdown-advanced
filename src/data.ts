@@ -16,7 +16,7 @@ const getItems = (context: string = '') => {
 		arr.push(new SeperatorItem());
 		arr.push(new ActionItem("profile", "Show Profile", "mdi-face"));
 		arr.push(new ActionItem("shortcuts", "Show Shortcuts", "mdi-access-point"));
-		arr.push(new ActionItem("setting", "System Settings", "mdi-cogs"));
+		arr.push(new ActionItem("setting", "System Settings and a whole lot more and stuff", "mdi-cogs"));
 	}
 	if (context == 'logout') {
 		var item = new ActionItem("A", "Logout Show outstanding alerts", "mdi-cloud-download", true);

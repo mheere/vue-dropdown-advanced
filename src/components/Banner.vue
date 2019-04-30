@@ -35,8 +35,8 @@ export default {
 <style lang="scss" scoped>
 .banner {
   padding: 12px;
-  background-color: #fcf6cd;
-  color: #f6a623;
+  background-color: #f5eebd;
+  color: #b96903;
   text-align: left;
   position: fixed;
   z-index: 2;

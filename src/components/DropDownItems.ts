@@ -43,37 +43,6 @@ export class DropDownItemBase {
         return this.constructor.toString() === HeaderItem.toString();
     }
 
-    // public asActionItem(item: any): ActionItem {
-    //     return (item as ActionItem)
-    // }
-
-    // public asOptionItem(item: any): OptionItem {
-    //     return (item as OptionItem);
-    // }
-
-    // get ddclass(): string {
-    //     var classval = "";
-    //     if (this.isActionItem) classval = "action";
-    //     if (this.isOptionItem) classval = "option";
-    //     if (this.isSeperatorItem) classval = "seperator";
-    //     if (this.isHeaderItem) classval = "header";
-
-    //     if (this.isDisabled) classval += " disabled ";
-        
-    //     return classval;
-    // }
-
-    // ensure a 'title' is set if the dropdown item is showing ellipses
-    public setTitle(el: any, title: string) {
-        if (el == null) return;
-
-        // enure no title is shown if we are within the width (even if the target did specify one)
-        el.setAttribute('title', "");
-
-        if (el.offsetWidth < el.scrollWidth)  
-            el.setAttribute('title', title);
-    }
-
     // public render(adjustLeftMargin?: string): JSX.Element {
     //     return (<span className='dda-dropdown-item'>not implemented</span>)
     // }
@@ -147,11 +116,6 @@ export class ActionItem extends DropDownItemBase {
         return "img img-left mdi " + this.imageLeft;
     }
 
-    // private isImgFontAwesome(img: string): boolean { return img.startsWith("fa-") }
-    // private isImgMaterial(img: string): boolean { return !this.isImgFontAwesome(img) }
-    // public isLeftImgFontAwesome(): boolean { return this.isImgFontAwesome(this.imageLeft) }
-    // public isLeftImgMaterial(): boolean { return this.isImgMaterial(this.imageLeft) }
-
     public addRightImage(img: string, toolTip?: string) { this.imagesRight.push(new RightImageInfo(img, toolTip)); }
 
     public ToString() {
@@ -175,7 +139,6 @@ export class ActionItem extends DropDownItemBase {
             ]
         )
     }
-
 }
 
 export class RightImageInfo {

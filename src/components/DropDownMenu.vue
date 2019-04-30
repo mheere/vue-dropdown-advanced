@@ -18,7 +18,7 @@
               <span v-if="item.hasImg" >
                 <span v-bind:class="item.imgClass"></span>
               </span>
-              <span class='flex'>
+              <span class='flex' >
                 {{ item.text }}
               </span>
               <span v-for="(imgItem, index) in item.imagesRight" v-bind:key="index" v-on:click.stop.prevent="click(item, imgItem)" >
@@ -92,7 +92,7 @@ export default Vue.extend({
 
       // if implementer wants us to close the dropdown then do so
       if (closeDrowDown)
-        this.show = false;
+        this.toggle();
       
       // if a click handler is given for the entire dropdown then call it with full info
       if (this.onClick) 
@@ -110,23 +110,40 @@ export default Vue.extend({
         this.toggle();
       }
     },
-    toggle() {
-      // let xx = () => (this.show = !this.show);
-      // xx = xx.bind(this);
+    setDropDownItems(items) {
+      this.my_items = items;
+      this.$nextTick( _ => this.setTitleAttributesIfNeccesary());
+    },
+    setTitleAttributesIfNeccesary() {
+      let elementList = this.$element.querySelectorAll("div.dda-dropdown-list .flex");
+      elementList.forEach(el => {
+        el.setAttribute('title', "");
+
+        if (el.offsetWidth < el.scrollWidth)  
+            el.setAttribute('title', el.innerText);
+      });  
+    },
+    async toggle() {
+      // toggle the 'show' property
       this.show = !this.show
 
       // if we have an async retrieval of items then invoke it here
       if (this.show) {
         if (this.items) {
-          this.my_items = this.items;
+          this.setDropDownItems(this.items);
         }
 
         else if (this.itemsAsync)  {
-          this.itemsAsync().then(_items => this.my_items = _items);
+          let myitems = await this.itemsAsync();
+          
+          // important! - after await we have to make sure that we are 
+          // still wishing to show the items!
+          if (this.show)
+            this.setDropDownItems(myitems);
         }
       }
       else {
-        this.my_items = [];
+        this.setDropDownItems([]);
       }
 
     }
@@ -167,30 +184,16 @@ export default Vue.extend({
 
       console.log("newV: ", newValue);
 
-      if (newValue) {
+      if (newValue) 
         document.addEventListener('click', this.close);
-
-        // // if we have an async retrieval of items then invoke it here
-        // if (this.items) 
-        //   this.my_items = this.items;
-
-        // else if (this.itemsAsync) 
-        //   this.itemsAsync().then(items => this.my_items = items);
-
-      }
+      
       else
         document.removeEventListener('click', this.close)
-
-        // remove any items if we are closing the dropdown 
-        // this.my_items = [];
-          
     }
   },
   components: {},
   mounted() {
 
-    this.my_items = this.items;
-    
     // 
     let el: any = this.$refs.mydd;
     this.$element = el.parentElement;
@@ -329,15 +332,15 @@ $back-colour-right-img-hover: #bbbdc361;
         background: $back-colour-hover;
       }
 
-      &.action {
+      & .action {
         cursor: pointer;
       }
 
-      &.option {
+      & .option {
         cursor: pointer;
       }
 
-      &.disabled {
+      & .disabled {
         color: #ababab;
         background-color: #ebebeb0a;
         cursor: default;

@@ -8,8 +8,8 @@ const getItems = (context: string = '') => {
 	var arr: DropDownItemBase[] = [];
 	if (context == 'simple') {
 		arr.push(new ActionItem("A", "Holiday in France", "", false, _ => alert(_.key)));
-		arr.push(new ActionItem("B", "Go to California"));
-		arr.push(new ActionItem("C", "Visit London"));
+		arr.push(new ActionItem("B", "Go to California "));
+		arr.push(new ActionItem("C", "Visit the United Kingdom"));
 	}
 	if (context == 'logout-simple') {
 		arr.push(new ActionItem("logout", "Logout", "mdi-exit-run", false, _ => alert(_.key)));

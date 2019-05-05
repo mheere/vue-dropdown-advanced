@@ -1,13 +1,23 @@
 <template>
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
-    <h1>
+    <h3>
       Vue Dropdown Advanced test page
-    </h1>
+    </h3>
 
-    <hr />
+    <!-- <hr /> -->
 
-    <div class="row">
+    <div class="row space-top">
+
+      <div class='button example-dr'>
+        Example Down Right
+        <drop-down-menu v-bind:items="fixedItems" :onClick="this.onClick">  </drop-down-menu>
+      </div>
+
+      <div class='button example-dr'>
+        Example Down Right
+        <drop-down-menu v-bind:items="myitems_dr" :onClick="this.onClick">  </drop-down-menu>
+      </div>
 
       <div class='button example-dr'>
         Example Down Right
@@ -19,10 +29,6 @@
         <drop-down-menu v-bind:items="myitems_dl" :onClick="this.onClick" direction="down-left">  </drop-down-menu>
       </div>
 
-    </div>
-
-    <div class="row">
-
       <div class='button example-ur'>
         Example Up Right
         <drop-down-menu v-bind:items="myitems_ur" :onClick="this.onClick" direction="up-right">  </drop-down-menu>
@@ -32,6 +38,25 @@
         Example Up Left
         <drop-down-menu v-bind:items="myitems_ul" :onClick="this.onClick" direction="up-left">  </drop-down-menu>
       </div>
+
+       <div class='button '>
+        Showcase
+        <drop-down-menu v-bind:items="myitems_showcase" :onClick="this.onClick" direction="down-right">  </drop-down-menu>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <!-- <div class='button example-ur'>
+        Example Up Right
+        <drop-down-menu v-bind:items="myitems_ur" :onClick="this.onClick" direction="up-right">  </drop-down-menu>
+      </div>
+
+      <div class='button example-ul'>
+        Example Up Left
+        <drop-down-menu v-bind:items="myitems_ul" :onClick="this.onClick" direction="up-left">  </drop-down-menu>
+      </div> -->
 
     </div>
    
@@ -56,15 +81,21 @@ export default Vue.extend({
   name: "app",
   data: () => {
     const myitems_dr : DropDownItemBase[] = [];
+    const myitems_dr2 : DropDownItemBase[] = [];
     const myitems_dl : DropDownItemBase[] = [];
     const myitems_ur : DropDownItemBase[] = [];
     const myitems_ul : DropDownItemBase[] = [];
+    const myitems_showcase : DropDownItemBase[] = [];
+    const fixedItems: DropDownItemBase[] = [];
     const msg: string = "";
     return {
       myitems_dr,
+      myitems_dr2,
       myitems_dl,
       myitems_ur,
       myitems_ul,
+      myitems_showcase,
+      fixedItems,
       msg
     }
   },
@@ -92,10 +123,17 @@ export default Vue.extend({
     Banner, DropDownMenu
   },
   created() {
-    this.myitems_dr = getTestItems("logout");
+    this.myitems_dr = getTestItems("simple");
+    this.myitems_dr2 = getTestItems("logout");
     this.myitems_dl = getTestItems("logout-simple");
     this.myitems_ur = getTestItems("options-simple");
     this.myitems_ul = getTestItems("options");
+    this.myitems_showcase = getTestItems("showcase");
+
+    this.fixedItems.push(new ActionItem("A", "Holiday in France", "", false, _ => alert(_.key)));
+    this.fixedItems.push(new ActionItem("B", "Go to California"));
+    this.fixedItems.push(new ActionItem("C", "Visit London"));
+
   }
 });
 </script>
@@ -112,13 +150,17 @@ export default Vue.extend({
 
 .row {
   padding-top: 30px;
+
+  &.space-top {
+    padding-top: 210px;
+  }
 }
 
 .button {
   display: inline-block;
   border: 1px solid darkblue;
   background: lightgray;
-  margin: 25px;
+  margin: 75px;
   padding: 5px;
   width: 115px;
   font-size: 12px;

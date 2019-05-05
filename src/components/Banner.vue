@@ -8,8 +8,9 @@ const defaultStyles = {
   left: 0,
   right: 0,
 };
-export default {
+const Banner = {
   props: {
+    name: "Banner",
     position: {
       type: String,
       default: 'top',
@@ -31,6 +32,9 @@ export default {
     };
   },
 };
+
+export default Banner;
+
 </script>
 <style lang="scss" scoped>
 .banner {

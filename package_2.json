@@ -1,12 +1,17 @@
 {
-  "name": "vue-dropdown-advanced",
-  "version": "0.0.17",
-  "main": "dist/vdda.umd.js",
-  "private": true,
+  "name": "vdt-mh",
+  "version": "0.0.21",
+  "main": "dist/vdt-mh.umd.js",
+  "module": "dist/vdt-mh.esm.js",
+  "unpkg": "dist/vdt-mh.min.js",
+  "browser": {
+    "./sfc": "src/vdt-mh.vue"
+  },
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-bundle": "vue-cli-service build --target lib --name vue-dropdown-advanced ./src/components/index.js",
+    "build-bundle": "vue-cli-service build --target lib --name vdt-mh ./src/components/index.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

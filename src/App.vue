@@ -35,7 +35,12 @@
 
     </div>
    
-    <Banner position='bottom' hello='marcel'>This is a banner - testing by marcel...</Banner>
+    <!-- <Banner position='bottom' hello='marcel'>This is a banner - testing by marcel...</Banner> -->
+
+    <div class='notification' v-bind:class="{ show: msg.length > 0 }">
+      {{ msg }}
+    </div>
+
   </div>
 </template>
 
@@ -54,11 +59,13 @@ export default Vue.extend({
     const myitems_dl : DropDownItemBase[] = [];
     const myitems_ur : DropDownItemBase[] = [];
     const myitems_ul : DropDownItemBase[] = [];
+    const msg: string = "";
     return {
       myitems_dr,
       myitems_dl,
       myitems_ur,
-      myitems_ul
+      myitems_ul,
+      msg
     }
   },
   methods: {
@@ -68,10 +75,17 @@ export default Vue.extend({
         if (info.imageOnRight)
           msg += ` - RightImage was clicked: ${info.imageOnRight.imageRight}`;
         console.log(msg);
+        this.showNotification(msg);
       },
       async getAsyncItems() {
         await delay(1000);
         return this.myitems_dr;
+      },
+      async showNotification(msg) {
+        this.msg = msg;
+        await delay(3000);
+        if (this.msg == msg)
+          this.msg = "";
       }
   },
   components: {
@@ -113,5 +127,22 @@ export default Vue.extend({
     background:rgb(152, 152, 168);
     cursor: pointer;
   }
+}
+
+.notification {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    border: 2px solid green;
+    padding: 10px;
+    background: #e1f3e1;
+    border-radius: 8px;
+    opacity: 0;
+    -webkit-transition: opacity 0.2s; /* Safari */
+    transition: opacity 0.2s;
+
+    &.show {
+      opacity: 1;
+    }
 }
 </style>

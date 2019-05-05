@@ -57,7 +57,7 @@ const getItems = (context: string = '') => {
 	}
 	if (context == "showcase") {
 		var item = new ActionItem("booknow", "Book now!", "fa-plane");
-		item.data = { pos: context };                            // save some random data with this item
+		item.data = { pos: context };                            // save some random data with this item..
 		item.addRightImage("fa-cog", "settings");
 		item.addRightImage("fa-window-close-o", "exit the application");
 		arr.push(item);

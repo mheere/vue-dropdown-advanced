@@ -4,6 +4,12 @@ public/
 
 .npmignore
 .gitignore
+.eslintrc.js
+vue.config.js
+prettier.config.js
+postcss.config.js
+babel.config.js
+
 
 package-lock.json
 babel*

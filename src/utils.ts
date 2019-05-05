@@ -67,6 +67,6 @@ export function hasParentClassName(el: any, classname: string): boolean {
 }
 
 // hand delay function that can be used when doing async operations
-export function delay(time: number) { new Promise(resolve => setTimeout(() => resolve(), time)) };
+export function delay(time: number) { return new Promise(resolve => setTimeout(() => resolve(), time)) };
 
 

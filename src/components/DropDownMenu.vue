@@ -41,7 +41,7 @@ import { ActionItem, DropDownItemBase, DropDownDirection, RightImageInfo } from 
 import { getCoords } from "../utils";
 import '@mdi/font/css/materialdesignicons.css';
 
-// little trick bypass bl** typescript checking of $element....
+// little trick bypassing bl** typescript checking of $element....
 export class MyData {
   public $element: any = null;
   public show: boolean = false;

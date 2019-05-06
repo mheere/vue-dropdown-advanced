@@ -1,8 +1,8 @@
 {
   "name": "vue-dropdown-advanced",
-  "version": "0.0.17",
-  "main": "dist/vdda.umd.js",
-  "private": true,
+  "version": "0.0.8",
+  "main": "dist/vue-dropdown-advanced.umd.js",
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@mdi/font": "^3.6.95",
-    "core-js": "^2.6.5",
     "vue": "^2.6.10"
   },
   "devDependencies": {
@@ -31,6 +30,6 @@
   },
   "files": [
     "dist/*",
-    "src/index.js"
+    "src/components/index.js"
   ]
 }

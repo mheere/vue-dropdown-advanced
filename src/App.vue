@@ -109,8 +109,9 @@ export default Vue.extend({
         this.showNotification(msg);
       },
       async getAsyncItems() {
-        await delay(1000);
-        return this.myitems_dr;
+        await delay(1000);      // call an api for data (async)
+        // .. convert the data to DropDownItems ...
+        return this.myitems_dr; // return these items
       },
       async showNotification(msg) {
         this.msg = msg;

@@ -104,6 +104,7 @@ export class ActionItem extends DropDownItemBase {
     }
 
     public click(items: DropDownItemBase[]): boolean {
+        debugger;
         if (this.isDisabled) return false;
         if (this.clicked) this.clicked(this);
         return true;

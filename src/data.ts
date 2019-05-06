@@ -56,10 +56,10 @@ const getItems = (context: string = '') => {
 		arr.push(new RadioboxItem("keyO3", "Amsterdam is the best place to live", "C"));
 	}
 	if (context == "showcase") {
-		var item = new ActionItem("booknow", "Book now!", "fa-plane");
+		var item = new ActionItem("booknow", "Book now!", "mdi-airplane-takeoff");
 		item.data = { pos: context };                            // save some random data with this item..
-		item.addRightImage("fa-cog", "settings");
-		item.addRightImage("fa-window-close-o", "exit the application");
+		item.addRightImage("mdi-cogs", "settings");
+		item.addRightImage("mdi-exit-to-app", "exit the application");
 		arr.push(item);
 		arr.push(new SeperatorItem());
 		arr.push(new HeaderItem("Choose your destination:"));

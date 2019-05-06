@@ -12,7 +12,7 @@
 * and much more!
 
 ## -------------------------------------------------------------
-## ------------------ Work in PROGRESS --------------------
+## --------------- Under active development ---------------
 ## -------------------------------------------------------------
 
 
@@ -21,6 +21,15 @@ Have a look at the [demo-page](http://www.vuedropdown.marcelheeremans.com) to ch
 
 ## Typescript
 The code snippets below are extracts from my Typescript test project.  An `index.d.ts` file will be included soon to provide intellisense in your code.
+
+# Setup
+
+```javascript
+import Vue from 'vue';
+import { DropDownMenu, DropDownInfo, DropDownItemBase, HeaderItem, ActionItem, CheckboxItem, RadioboxItem, SeperatorItem } from "vue-dropdown-advanced";
+import '@mdi/font/css/materialdesignicons.css';
+```
+Note: don't forget to import the materialdesignicons.css (more on this later)
 
 # Using the Vue DropDown
 
@@ -68,7 +77,104 @@ export default Vue.extend({
 ```
 Bit boring, let's see what else we can do. 
 
+## Show-casing the dropddown advanced
 
+![down-right.png](http://www.vuedropdown.marcelheeremans.com/pics/showcase.png)
+
+That is more like it!
+
+Again, we 'attach' a DropDownMenu menu to the 'Example Down Right' div by nesting it within its div as shown in the Vue template below.
+
+```javascript
+/// The 'template' part of the Vue file
+<div class='button example-dr'>
+	Showcase
+	<drop-down-menu v-bind:items="fixedItems" :onClick="this.onClick">  </drop-down-menu>
+</div>
+```
+
+Notice we have bound the 'items' property to the 'fixedItems' data property of the vue model.  When the parent is 'clicked' the onClick handler is called with the item itself but also any other dropdown state.
+
+```javascript
+/// The 'javascript' part of the Vue file		
+var item = new ActionItem("booknow", "Book now!", "mdi-airplane-takeoff");
+item.data = { pos: context };                            // save some random data with this item..
+item.addRightImage("mdi-cogs", "settings");
+item.addRightImage("mdi-exit-to-app", "exit the application");
+
+fixedItems.push(item);
+fixedItems.push(new SeperatorItem());
+fixedItems.push(new HeaderItem("Choose your destination:"));
+fixedItems.push(new RadioboxItem("california", "California and Santa Monica", "A"));
+fixedItems.push(new RadioboxItem("newyork", "New York", "A"));
+fixedItems.push(new RadioboxItem("miami", "Miami", "A"));
+fixedItems.push(new SeperatorItem());
+fixedItems.push(new HeaderItem("Mode of transport:"));
+fixedItems.push(new RadioboxItem("car", "By car", "B"));
+fixedItems.push(new RadioboxItem("boat", "By boat", "B", true));
+fixedItems.push(new RadioboxItem("plane", "By plane", "B"));
+fixedItems.push(new SeperatorItem());
+fixedItems.push(new HeaderItem("Choose your activities:"));
+fixedItems.push(new CheckboxItem("beach", "Visit the beach"));
+fixedItems.push(new CheckboxItem("town", "Walk through town"));
+fixedItems.push(new CheckboxItem("park", "Visit Parks"));
+fixedItems.push(new CheckboxItem("hirecar", "Hire a car"));
+fixedItems.push(new CheckboxItem("nothing", "Do absolutely nothing !"));
+```
+
+```javascript
+
+onClick(info: DropDownInfo) {
+	// info.item		-> the selected item
+	// info.items		-> all the source items that are shown
+	// info.imageOnRight	-> (RightImageInfo) details regarding the right image if it was clicked
+},
+
+```
+
+Note the `groupBy` property available on Radiobox items.  Identical `groupBy` values will force a mutually exclusive group to be created, ie only a single radiobox can be 'checked' within a group. Hence in the example above we have two groups; one with groupBy marker 'A', the other with value 'B'.  These could be any unique strings.
+			
+
+
+## Dropdown Direction
+
+![down-right.png](http://www.vuedropdown.marcelheeremans.com/pics/merged.png)
+
+```javascript
+/// The 'template' part of the Vue file
+<div class='button'>
+   Example Up Left
+   <drop-down-menu v-bind:items="myitems_ul" :onClick="this.onClick" direction="up-left"></drop-down-menu>
+</div>
+```
+The direction of the dropdown is determined by the `direction` property.  The default is `down-right` but it can be set to `down-left`, `up-left` or `up-right`.
+
+## Retrieving dropdown items asynchronously
+
+By binding a function to the itemsAsync prop of the DropDownMenu it will call this upon selecting and expects an array of DropDown items to be returned.  This is extremely useful when items can only be determined at runtime.
+
+```javascript
+/// The 'template' part of the Vue file
+<div class='button'>
+   Example Up Left
+   <drop-down-menu v-bind:itemsAsync="getAsyncItems" :onClick="this.onClick">  </drop-down-menu>
+</div>
+```
+
+```javascript
+
+  methods: {
+      onClick(info: DropDownInfo) {
+        ...
+      },
+      async getAsyncItems() {
+        await delay(1000);      // call an api for data (async)
+        // .. convert the data to DropDownItems ...
+        return this.myitems_dr; // return these items
+      },
+  },
+		
+```
 
 
 # History

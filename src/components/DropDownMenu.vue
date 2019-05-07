@@ -304,6 +304,7 @@ $back-colour-right-img-hover: #bbbdc361;
     border: 2px solid $border-colour;
     overflow-y: auto;
     overflow-x: hidden;
+    display: block;
     @include border-box();
 
     & .action, .radiobox, .checkbox 

@@ -5,7 +5,7 @@
         <div v-for="(item) in my_items" 
           :class="item.getClass"
           :key="item.key" 
-          @click.stop.prevent="click(item)">
+          @click.stop.prevent="clickFromTempl(item)">
 
           <div v-if="item.isHeaderItem" class="dda-dropdown-item">
               {{ item.text }}
@@ -18,7 +18,7 @@
               <span class='flex' >
                 {{ item.text }}
               </span>
-              <span v-for="(imgItem, index) in item.imagesRight" :key="index" @click.stop.prevent="click(item, imgItem)">
+              <span v-for="(imgItem, index) in item.imagesRight" :key="index" @click.stop.prevent="clickFromTempl(item, imgItem)">
                   <span v-bind:class="imgItem.imgClass" v-bind:title="imgItem.toolTip"></span>
               </span>
           </div>
@@ -46,7 +46,7 @@ export class MyData {
   public $element: any = null;
   public show: boolean = false;
   public my_direction: DropDownDirection = DropDownDirection.DownRight;
-  public my_items: DropDownItemBase[] = [];
+  public my_items: DropDownItemBase[] = [];   // this is the list we create the dropdown items from
 }
 
 export class DropDownInfo {
@@ -62,7 +62,6 @@ export class DropDownInfo {
 
 export default Vue.extend({
   name: "DropDownMenu",
-  //props: ["items", "itemsAsync", "onClick", "direction"],
   props: {
     items: {
       type: Array,
@@ -73,33 +72,38 @@ export default Vue.extend({
     itemsAsync: {
       type: Function
     },
-    onClick: {
+    click: {
       type: Function
     },
     direction: {
-      type: [ String, Number ],
+      type: [ String ],
       default: function () {
-        return 0;
+        return "down-right";
+      },
+      validator: function (value: string) {
+        value = value.toLowerCase()
+        return ['down-right', 'down-left', 'up-right', 'up-left'].indexOf(value) !== -1
       }
     }
   },
   data: () => new MyData(),
   methods: {
-    click(item: ActionItem, rightImgInfo: RightImageInfo = undefined) {
+    clickFromTempl(item: ActionItem, rightImgInfo: RightImageInfo = undefined) {
 
       // if item is disabled then stop
       if (item.isHeaderItem || item.isSeperatorItem || item.isDisabled) return;
       
-      // pass the click instruction down to the implementer
-      let closeDrowDown = item.click(this.my_items);
+      // pass the click instruction down to the implementation (like ActionItem, CheckboxItem, etc)
+      let closeDrowDown = item.click(this.items);
 
       // if implementer wants us to close the dropdown then do so
       if (closeDrowDown)
         this.toggle();
       
       // if a click handler is given for the entire dropdown then call it with full info
-      if (this.onClick) 
-        this.onClick( new DropDownInfo(item, this.my_items, rightImgInfo));
+      // also, raise this on the nextTick so vue renders the item properly first!
+      if (this.click) 
+        this.$nextTick( _ => this.click(new DropDownInfo(item, this.items, rightImgInfo)));
     },
     getCoords() {
       let el = this.$element;

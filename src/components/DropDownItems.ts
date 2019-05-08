@@ -80,7 +80,7 @@ export class HeaderItem extends DropDownItemBase {
 
 // probably the most often used Item - by default the dropdown closes onClick
 export class ActionItem extends DropDownItemBase {
-    public clicked: ((ai: ActionItem) => void) | undefined = undefined;
+    public clicked: ((ai: ActionItem) => void) | undefined = undefined; // a click handler in case the caller wishes to act on this click directly..
     public imageLeft: string = "";              // image (either fa or material)
     public imagesRight: RightImageInfo[] = [];  // image (either fa or material)
 
@@ -110,6 +110,7 @@ export class ActionItem extends DropDownItemBase {
     }
 }
 
+// little helper class that groups some common props..
 class CheckedItem extends ActionItem {
     public isChecked: boolean = false; 
     public groupBy: string = "";

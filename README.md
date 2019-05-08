@@ -1,19 +1,18 @@
-
 # An advanced Vue Dropdown Component 
+
+An advanced pure Vue Dropdown control with many customisable options.
 
 ## Key features
 * caters for different types of dropdown items (action, checkbox, radio, header, seperator) 
 * lazily calls back for dropdown items (synchronously or asynchronously!)
+* images are supported on left and on the right (multiple)
 * dropdown items are removed from the markup when dropdown is closed
-* a variety of life-cycle events are raised on check, click, open/close etc
-* dropdown location is configurable (left/right/top/bottom)
-* the dropdown can be created through code using any html element as source
-* popup is closable through code
+* dropdown location is configurable (left/right/up/down)
 * and much more!
 
-## -------------------------------------------------------------
-## --------------- Under active development ---------------
-## -------------------------------------------------------------
+### -------------------------------------------------------------
+### --------------- Under active development ---------------
+### -------------------------------------------------------------
 
 
 ## Demo
@@ -37,13 +36,13 @@ Note: don't forget to import the materialdesignicons.css (more on this later)
 
 ![down-right.png](http://www.vuedropdown.marcelheeremans.com/pics/down-right.png)
 
-We 'attach' a DropDownMenu menu to the 'Example Down Right' div by nesting it within its div as shown in the Vue template below.
+We 'attach' a DropDownMenu menu to the 'Example Down Right' div simply by nesting it within its parent element as shown in the Vue template below.  This is imporant since a 'click' handler is attached to this parent so the dropdown can be toggled when clicked.
 
 ```javascript
 /// The 'template' part of the Vue file
 <div class='button example-dr'>
 	Example Down Right
-	<drop-down-menu v-bind:items="fixedItems" :onClick="this.onClick">  </drop-down-menu>
+	<drop-down-menu :items="fixedItems" :click="this.onClick">  </drop-down-menu>
 </div>
 ```
 
@@ -89,7 +88,7 @@ Again, we 'attach' a DropDownMenu menu to the 'Example Down Right' div by nestin
 /// The 'template' part of the Vue file
 <div class='button example-dr'>
 	Showcase
-	<drop-down-menu v-bind:items="fixedItems" :onClick="this.onClick">  </drop-down-menu>
+	<drop-down-menu :items="fixedItems" :click="this.onClick">  </drop-down-menu>
 </div>
 ```
 
@@ -144,7 +143,7 @@ Note the `groupBy` property available on Radiobox items.  Identical `groupBy` va
 /// The 'template' part of the Vue file
 <div class='button'>
    Example Up Left
-   <drop-down-menu v-bind:items="myitems_ul" :onClick="this.onClick" direction="up-left"></drop-down-menu>
+   <drop-down-menu :items="myitems_ul" :click="this.onClick" direction="up-left"></drop-down-menu>
 </div>
 ```
 The direction of the dropdown is determined by the `direction` property.  The default is `down-right` but it can be set to `down-left`, `up-left` or `up-right`.
@@ -157,7 +156,7 @@ By binding a function to the itemsAsync prop of the DropDownMenu it will call th
 /// The 'template' part of the Vue file
 <div class='button'>
    Example Up Left
-   <drop-down-menu v-bind:itemsAsync="getAsyncItems" :onClick="this.onClick">  </drop-down-menu>
+   <drop-down-menu :itemsAsync="getAsyncItems" :click="this.onClick">  </drop-down-menu>
 </div>
 ```
 
@@ -181,5 +180,6 @@ By binding a function to the itemsAsync prop of the DropDownMenu it will call th
 
 |version | Notes |
 | ---- | ------ |
-v 0.0.1 | Initial release - work in progress
+v 0.0.1..8 | Initial release - work in progress
+v 0.0.9 | small fixes
 

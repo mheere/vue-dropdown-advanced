@@ -8,6 +8,7 @@ const getItems = (context: string = '') => {
 	var arr: DropDownItemBase[] = [];
 	if (context == 'simple') {
 		arr.push(new ActionItem("A", "Holiday in France", "", false, _ => alert(_.key)));
+		arr.push(new SeperatorItem());
 		arr.push(new ActionItem("B", "Go to California "));
 		arr.push(new ActionItem("C", "Visit the United Kingdom"));
 	}

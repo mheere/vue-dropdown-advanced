@@ -1,6 +1,6 @@
 {
   "name": "vue-dropdown-advanced",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "main": "dist/vue-dropdown-advanced.umd.js",
   "private": false,
   "scripts": {

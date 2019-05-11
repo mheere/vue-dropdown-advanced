@@ -10,9 +10,7 @@ An advanced pure Vue Dropdown control with many customisable options.
 * dropdown location is configurable (left/right/up/down)
 * and much more!
 
-### -------------------------------------------------------------
-### --------------- Under active development ---------------
-### -------------------------------------------------------------
+## --------------- Under active development ---------------
 
 
 ## Demo
@@ -26,9 +24,22 @@ The code snippets below are extracts from my Typescript test project.  An `index
 ```javascript
 import Vue from 'vue';
 import { DropDownMenu, DropDownInfo, DropDownItemBase, HeaderItem, ActionItem, CheckboxItem, RadioboxItem, SeperatorItem } from "vue-dropdown-advanced";
+
+import 'vue-dropdown-advanced/dist/vue-dropdown-advanced.css;
+
 import '@mdi/font/css/materialdesignicons.css';
 ```
-Note: don't forget to import the materialdesignicons.css (more on this later)
+
+### _**include the vue-dropdown-advanced.css**_
+Make sure you include the vue-dropdown-advanced.css file in your main imports.
+
+`import 'vue-dropdown-advanced/dist/vue-dropdown-advanced.css`
+
+### _**include the materialdesignicons.css**_
+If you wish to use images then also include the scoped @mdi/font/css/materialdesignicons.css (you must have '@mdi/font' as a dependency in your project)
+
+`import '@mdi/font/css/materialdesignicons.css'`
+
 
 # Using the Vue DropDown
 

@@ -39,7 +39,6 @@
 import Vue from "vue";
 import { ActionItem, DropDownItemBase, DropDownDirection, RightImageInfo } from "./DropDownItems";
 import { getCoords } from "../utils";
-import '@mdi/font/css/materialdesignicons.css';
 
 // little trick bypassing bl** typescript checking of $element....
 export class MyData {
@@ -258,38 +257,6 @@ $back-colour-right-img-hover: #bbbdc361;
   flex: 1;
 }
 
-.img {
-  padding: 1px;
-  -webkit-transition: border 0.4s; /* Safari */
-  transition: border 0.4s;
-}
-
-.img-border {
-  border: 1px solid transparent;
-  &:hover {
-    border: 1px solid rgb(182, 182, 89);
-  }
-}
-
-.img-left {
-  margin-left: 0px;
-  margin-right: 0px;
-  padding: 1px;
-}
-
-.img-right {
-  margin-left: 0px;
-  margin-right: 3px;
-}
-
-// .flex-container {
-//   @include flexbox();
-// }
-
-// .flex-text {
-//   @include flexchild();
-// }
-
 .dda-container {
   position: absolute;
   z-index: 3;
@@ -297,10 +264,29 @@ $back-colour-right-img-hover: #bbbdc361;
   box-shadow: rgb(202, 202, 183) 0px 0px 10px 1px;
   @include border-box();
 
-  // &.show > .dda-dropdown-list {
-  //   display: block;
-  //   text-align: left;
-  // }
+  .img {
+    padding: 1px;
+    -webkit-transition: border 0.4s; /* Safari */
+    transition: border 0.4s;
+  }
+
+  .img-border {
+    border: 1px solid transparent;
+    &:hover {
+      border: 1px solid rgb(182, 182, 89);
+    }
+  }
+
+  .img-left {
+    margin-left: 0px;
+    margin-right: 0px;
+    padding: 1px;
+  }
+
+  .img-right {
+    margin-left: 0px;
+    margin-right: 3px;
+  }
 
   .dda-dropdown-list {
     max-width: 200px;

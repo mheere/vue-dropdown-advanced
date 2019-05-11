@@ -183,4 +183,5 @@ By binding a function to the itemsAsync prop of the DropDownMenu it will call th
 v 0.0.1..8 | Initial release - work in progress
 v 0.0.9 | small fixes
 v 0.0.10 | exporting more helper objects (like getTestItems, delay, createGuidRight5)
+v 0.0.11 | cleaned package - separated css and materialdesignicons.css
 

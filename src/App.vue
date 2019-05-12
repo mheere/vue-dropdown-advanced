@@ -11,7 +11,7 @@
 
       <div class='button example-dr'>
         Example Down Right
-        <drop-down-menu :items="fixedItems" :click="this.onClick">  </drop-down-menu>
+        <drop-down-menu :items="fixedItems" @click="this.onClick">  </drop-down-menu>
       </div>
 
       <div class='button example-dr'>
@@ -52,8 +52,8 @@
         <div style="display: flex">
           <span>span1</span>
           <div class='example-ur' style="flex: 1; border: 1px solid red">
-            Example Up Right
-            <drop-down-menu v-bind:items="myitems_ur" :click="this.onClick" direction="up-left">  </drop-down-menu>
+            Example Up Right **
+            <drop-down-menu v-bind:items="myitems_ur" :click="this.onClick" @click="this.onClick" direction="up-left">  </drop-down-menu>
           </div>
           <span>span2</span>
         </div>
@@ -61,7 +61,7 @@
 
       <div class='button example-ul'>
         Example Up Left
-        <drop-down-menu v-bind:items="myitems_ul" :click="this.onClick" direction="up-left">  </drop-down-menu>
+        <drop-down-menu v-bind:items="myitems_ul" :click="this.onClick" @click="this.onClick" direction="up-left">  </drop-down-menu>
       </div>
 
     </div>

@@ -53,7 +53,7 @@ We 'attach' a DropDownMenu menu to the 'Example Down Right' div simply by nestin
 /// The 'template' part of the Vue file
 <div class='button example-dr'>
 	Example Down Right
-	<drop-down-menu :items="fixedItems" :click="this.onClick">  </drop-down-menu>
+	<drop-down-menu :items="fixedItems" @click="this.onClick">  </drop-down-menu>
 </div>
 ```
 
@@ -99,7 +99,7 @@ Again, we 'attach' a DropDownMenu menu to the 'Example Down Right' div by nestin
 /// The 'template' part of the Vue file
 <div class='button example-dr'>
 	Showcase
-	<drop-down-menu :items="fixedItems" :click="this.onClick">  </drop-down-menu>
+	<drop-down-menu :items="fixedItems" @click="this.onClick">  </drop-down-menu>
 </div>
 ```
 
@@ -144,46 +144,64 @@ onClick(info: DropDownInfo) {
 
 Note the `groupBy` property available on Radiobox items.  Identical `groupBy` values will force a mutually exclusive group to be created, ie only a single radiobox can be 'checked' within a group. Hence in the example above we have two groups; one with groupBy marker 'A', the other with value 'B'.  These could be any unique strings.
 			
+### Right placed Images 
+Images placed on the right of the text are selectable and therefore can be 'listened' for. 
+
+![down-right.png](http://www.vuedropdown.marcelheeremans.com/pics/rightimages.png)
+
+Use the `addRightImage` method to add a 'right aligned' image to an ActionItem. The first param is a [materialdesignicons](https://cdn.materialdesignicons.com/3.6.95/) identifier, the second is an optional tooltip.
+
+
+```javascript
+...
+var item = new ActionItem("booknow", "Book now!", "mdi-airplane-takeoff");
+item.data = { pos: context };                            // save some random data with this item..
+item.addRightImage("mdi-cogs", "settings");              
+item.addRightImage("mdi-exit-to-app", "exit the application");
+...
+```
+
 
 
 ## Dropdown Direction
+The dropdown doesn't necessarily has to go 'down' :)  It can also go up as well as be left or right aligned.
+This is controlled through the `direction` property.  
+The default is `down-right` but it can be set to `down-left`, `up-left` or `up-right` - see examples below.
 
 ![down-right.png](http://www.vuedropdown.marcelheeremans.com/pics/merged.png)
 
 ```javascript
-/// The 'template' part of the Vue file
+/// The 'template' part of the Vue file (NOTE the 'direction' property)
 <div class='button'>
    Example Up Left
-   <drop-down-menu :items="myitems_ul" :click="this.onClick" direction="up-left"></drop-down-menu>
+   <drop-down-menu :items="myitems_ul" @click="this.onClick" direction="up-left"></drop-down-menu>
 </div>
 ```
-The direction of the dropdown is determined by the `direction` property.  The default is `down-right` but it can be set to `down-left`, `up-left` or `up-right`.
+
 
 ## Retrieving dropdown items asynchronously
 
-By binding a function to the itemsAsync prop of the DropDownMenu it will call this upon selecting and expects an array of DropDown items to be returned.  This is extremely useful when items can only be determined at runtime.
+When binding a function to the itemsAsync prop of the DropDownMenu a is made to this function when the dropdown is requested.  The function is expected to return an array of DropDown items.  This is **_extremely_** useful when dropdown items can only be determined at runtime.
 
 ```javascript
 /// The 'template' part of the Vue file
 <div class='button'>
    Example Up Left
-   <drop-down-menu :itemsAsync="getAsyncItems" :click="this.onClick">  </drop-down-menu>
+   <drop-down-menu :itemsAsync="getAsyncItems" @click="this.onClick">  </drop-down-menu>
 </div>
 ```
 
 ```javascript
-
   methods: {
       onClick(info: DropDownInfo) {
         ...
       },
       async getAsyncItems() {
-        await delay(1000);      // call an api for data (async)
+        await delay(1000);      // call an api for (dropdown) data (async)
         // .. convert the data to DropDownItems ...
         return this.myitems_dr; // return these items
       },
   },
-		
 ```
 
 
@@ -195,4 +213,5 @@ v 0.0.1..8 | Initial release - work in progress
 v 0.0.9 | small fixes
 v 0.0.10 | exporting more helper objects (like getTestItems, delay, createGuidRight5)
 v 0.0.11 | cleaned package - separated css and materialdesignicons.css
+v 0.1.0 | introduced @click event handler in addition to :click callback
 

@@ -101,8 +101,20 @@ export default Vue.extend({
       
       // if a click handler is given for the entire dropdown then call it with full info
       // also, raise this on the nextTick so vue renders the item properly first!
-      if (this.click) 
-        this.$nextTick( _ => this.click(new DropDownInfo(item, this.items, rightImgInfo)));
+
+      // create an info object for our items
+      let info = new DropDownInfo(item, this.items, rightImgInfo);
+
+      // allow the UI to render first
+      this.$nextTick( _ => {
+
+        // if a callback click handler was given then call it
+        if (this.click) this.click(info);
+
+        // and always raise the event in case the user has hooked up through events
+        this.$emit('click', info);
+        
+      });
     },
     getCoords() {
       let el = this.$element;

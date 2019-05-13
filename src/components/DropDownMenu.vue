@@ -80,8 +80,26 @@ export default Vue.extend({
         return "down-right";
       },
       validator: function (value: string) {
-        value = value.toLowerCase()
-        return ['down-right', 'down-left', 'up-right', 'up-left'].indexOf(value) !== -1
+        value = value.toLowerCase();
+        return ['down-right', 'down-left', 'up-right', 'up-left'].indexOf(value) !== -1;
+      }
+    },
+    minWidth: {
+      type: String,
+      default: function () {
+        return "0";
+      }
+    },
+    maxWidth: {
+      type: String,
+      default: function () {
+        return "0";
+      }
+    },
+    maxHeight: {
+      type: String,
+      default: function () {
+        return "0";
       }
     }
   },
@@ -113,7 +131,7 @@ export default Vue.extend({
 
         // and always raise the event in case the user has hooked up through events
         this.$emit('click', info);
-        
+
       });
     },
     getCoords() {
@@ -132,6 +150,15 @@ export default Vue.extend({
       this.$nextTick( _ => this.setTitleAttributesIfNeccesary());
     },
     setTitleAttributesIfNeccesary() {
+
+      // get a ref to our dda-dropdown-list element
+      let el = this.$element.querySelector("div.dda-dropdown-list");
+
+      // check for overrides of the default min/max width/height
+      if (this.minWidth != "0") el.style.minWidth = this.minWidth;
+      if (this.maxWidth != "0") el.style.maxWidth = this.maxWidth;
+      if (this.maxHeight != "0") el.style.maxHeight = this.maxHeight;
+
       // get a list of all the 'text's from the all items
       let elementList = this.$element.querySelectorAll("div.dda-dropdown-list .flex");
       elementList.forEach(el => {
@@ -140,7 +167,10 @@ export default Vue.extend({
         // trick to check if the content would require a scroll
         if (el.offsetWidth < el.scrollWidth)  
             el.setAttribute('title', el.innerText);
-      });  
+      }); 
+      
+      
+
     },
     async toggle() {
       // toggle the 'show' property
@@ -162,7 +192,7 @@ export default Vue.extend({
         }
       }
       else {
-        // clear out the list of items
+        // clear out the list of items (replace with an empty array so we hang on to the original list)
         this.setDropDownItems([]);
       }
     }

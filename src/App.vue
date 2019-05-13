@@ -10,13 +10,14 @@
     <div class="row space-top">
 
       <div class='button example-dr'>
-        Example Down Right
-        <drop-down-menu :items="fixedItems" @click="this.onClick">  </drop-down-menu>
+        Example
+        <span v-on:click.stop.prevent="updateSource" style="color:yellow; background:black">update</span>
+        <drop-down-menu :items="fixedItems" @click="this.onClick" min-width="240px" >  </drop-down-menu>
       </div>
 
       <div class='button example-dr'>
         Example Down Right
-        <drop-down-menu v-bind:items="myitems_dr" v-bind:click="this.onClick">  </drop-down-menu>
+        <drop-down-menu v-bind:items="myitems_dr" v-bind:click="this.onClick" max-width="80px">  </drop-down-menu>
       </div>
 
       <div class='button example-dr'>
@@ -41,7 +42,7 @@
 
        <div class='button '>
         Showcase
-        <drop-down-menu v-bind:items="myitems_showcase" :click="this.onClick" direction="down-right">  </drop-down-menu>
+        <drop-down-menu v-bind:items="myitems_showcase" :click="this.onClick" direction="down-right" >  </drop-down-menu>
       </div>
 
     </div>
@@ -60,9 +61,11 @@
       </div>
 
       <div class='button example-ul'>
-        Example Up Left
+        Example Up Left2
         <drop-down-menu v-bind:items="myitems_ul" :click="this.onClick" @click="this.onClick" direction="up-left">  </drop-down-menu>
       </div>
+
+      
 
     </div>
    
@@ -81,7 +84,7 @@ import Banner from "./components/Banner.vue";
 import DropDownMenu, { DropDownInfo } from "./components/DropDownMenu.vue";
 import { DropDownItemBase, ActionItem, HeaderItem, DropDownDirection } from "./components/DropDownItems";
 import { getTestItems } from './data';
-import { delay } from './utils';
+import { delay, createGuidRight5 } from './utils';
 
 export default Vue.extend({
   name: "app",
@@ -124,6 +127,11 @@ export default Vue.extend({
         await delay(3000);
         if (this.msg == msg)
           this.msg = "";
+      },
+      updateSource() {
+        console.log("updateSource");
+        this.fixedItems.push(new ActionItem(createGuidRight5(), "Visit London"));
+        //this.fixedItems = getTestItems("logout");
       }
   },
   components: {

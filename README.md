@@ -17,7 +17,7 @@ An advanced pure Vue Dropdown control with many customisable options.
 Have a look at the [demo-page](http://www.vuedropdown.marcelheeremans.com) to check it out!
 
 ## Typescript
-The code snippets below are extracts from my Typescript test project.  An `index.d.ts` file will be included soon to provide intellisense in your code.
+The code snippets below are extracts from the demo project.  An `index.d.ts` file providing intellisense will be included soon.
 
 # Setup
 
@@ -25,7 +25,7 @@ The code snippets below are extracts from my Typescript test project.  An `index
 import Vue from 'vue';
 import { DropDownMenu, DropDownInfo, DropDownItemBase, HeaderItem, ActionItem, CheckboxItem, RadioboxItem, SeperatorItem } from "vue-dropdown-advanced";
 
-import 'vue-dropdown-advanced/dist/vue-dropdown-advanced.css;
+import 'vue-dropdown-advanced/dist/vue-dropdown-advanced.css';
 
 import '@mdi/font/css/materialdesignicons.css';
 ```
@@ -204,6 +204,18 @@ When binding a function to the itemsAsync prop of the DropDownMenu a is made to 
   },
 ```
 
+## Max/Min dropdown sizing
+
+A certain minimum or maximum of the dropdown can be enforced by providing a `min-width`, `max-width` or `max-height` property as shown below. Specify the value including the unit ('px' in this case).
+
+```javascript
+/// The 'template' part of the Vue file
+<div class='button'>
+   Example Up Left
+   <drop-down-menu :itemsAsync="getAsyncItems" @click="this.onClick" min-width="240px">  </drop-down-menu>
+</div>
+```
+
 
 # History
 
@@ -214,4 +226,4 @@ v 0.0.9 | small fixes
 v 0.0.10 | exporting more helper objects (like getTestItems, delay, createGuidRight5)
 v 0.0.11 | cleaned package - separated css and materialdesignicons.css
 v 0.1.0 | introduced @click event handler in addition to :click callback
-
+v 0.1.1 | dropdown now supports min-width, max-width and max-height properties

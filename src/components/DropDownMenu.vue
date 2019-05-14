@@ -151,13 +151,13 @@ export default Vue.extend({
     },
     setTitleAttributesIfNeccesary() {
 
-      // get a ref to our dda-dropdown-list element
-      let el = this.$element.querySelector("div.dda-dropdown-list");
+      // // get a ref to our dda-dropdown-list element
+      // let el = this.$element.querySelector("div.dda-dropdown-list");
 
-      // check for overrides of the default min/max width/height
-      if (this.minWidth != "0") el.style.minWidth = this.minWidth;
-      if (this.maxWidth != "0") el.style.maxWidth = this.maxWidth;
-      if (this.maxHeight != "0") el.style.maxHeight = this.maxHeight;
+      // // check for overrides of the default min/max width/height
+      // if (this.minWidth != "0") el.style.minWidth = this.minWidth;
+      // if (this.maxWidth != "0") el.style.maxWidth = this.maxWidth;
+      // if (this.maxHeight != "0") el.style.maxHeight = this.maxHeight;
 
       // get a list of all the 'text's from the all items
       let elementList = this.$element.querySelectorAll("div.dda-dropdown-list .flex");
@@ -169,8 +169,6 @@ export default Vue.extend({
             el.setAttribute('title', el.innerText);
       }); 
       
-      
-
     },
     async toggle() {
       // toggle the 'show' property
@@ -253,6 +251,14 @@ export default Vue.extend({
     else if (this.direction) {
       this.my_direction = this.direction;
     }
+
+    // get a ref to our dda-dropdown-list element
+    let elDDA = this.$element.querySelector("div.dda-dropdown-list");
+
+    // check for overrides of the default min/max width/height
+    if (this.minWidth != "0") elDDA.style.minWidth = this.minWidth;
+    if (this.maxWidth != "0") elDDA.style.maxWidth = this.maxWidth;
+    if (this.maxHeight != "0") elDDA.style.maxHeight = this.maxHeight;
 
     // if the source element does not have a 'position' set then we'll set it to 'relative'
     var posNotSet =

@@ -269,7 +269,7 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 $item-height: 30px;
 $font-size: 14px;
 $border-colour: rgb(194, 194, 195);

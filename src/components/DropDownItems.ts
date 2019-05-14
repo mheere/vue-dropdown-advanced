@@ -14,16 +14,14 @@ export class DropDownItemBase {
     public text: string = "";
     public isDisabled: boolean = false;
     public data: any = undefined;           // allow any object to be associated with this item - quite handy!
-    public baseClassName: string = ""; 
 
-    constructor(key: string = "", text: string = "", className: string = "") {
+    constructor(key: string = "", text: string = "") {
         // if no key was given then we will allocate one
         if (!key) key = createGuidRight5();
 
         // hand them over
         this.key = key;
         this.text = text;
-        this.baseClassName = className;
     }
 
     get isActionItem(): boolean {
@@ -42,21 +40,17 @@ export class DropDownItemBase {
         return instanceOf(this, HeaderItem);
     }
 
-    get getClass(): string {
-        let xx = this.baseClassName;
-        if (this.isActionItem) xx += " action"
-        if (this.isRadioboxItem) xx += " radiobox"
-        if (this.isCheckboxItem) xx += " checkbox"
-        if (this.isDisabled) xx += " disabled"
-        return xx;
-    }
+    get getClass(): string { return "not-implemented"; }
+
 }
 
 export class SeperatorItem extends DropDownItemBase {
 
     constructor() {
-        super("", "", "seperator");
+        super("", "");
     }
+
+    get getClass(): string { return "seperator"; }
 
     public getStyle() {
         return {
@@ -68,8 +62,10 @@ export class SeperatorItem extends DropDownItemBase {
 export class HeaderItem extends DropDownItemBase {
 
     constructor(header: string) {
-        super("", header, "header");
+        super("", header);
     }
+
+    get getClass(): string { return "header"; }
 
     public getStyle() {
         return {
@@ -85,7 +81,7 @@ export class ActionItem extends DropDownItemBase {
     public imagesRight: RightImageInfo[] = [];  // image (either fa or material)
 
     constructor(key: string, text: string, image?: string, isDisabled?: boolean, clicked?: (ai: ActionItem) => void) {
-        super(key, text, "action");
+        super(key, text);
         this.imageLeft = image || "";
         this.isDisabled = isDisabled || false;
         this.clicked = clicked;
@@ -93,9 +89,9 @@ export class ActionItem extends DropDownItemBase {
 
     get hasImg(): boolean { return this.imageLeft.length > 0}
 
-    get imgClass(): string {
-        return "img img-left mdi " + this.imageLeft;
-    }
+    get getClass(): string { return "action"; }
+
+    get imgClass(): string { return "img img-left mdi " + this.imageLeft; }
 
     public addRightImage(img: string, toolTip?: string) { this.imagesRight.push(new RightImageInfo(img, toolTip)); }
 
@@ -124,9 +120,11 @@ class CheckedItem extends ActionItem {
 export class CheckboxItem extends CheckedItem {
 
     constructor(key: string, text: string, isChecked: boolean = false) {
-        super(key, text, "checkbox");
+        super(key, text,);
         this.isChecked = isChecked;
     }
+
+    get getClass(): string { return "checkbox"; }
 
     // return "img img-border img-right mdi " + this.imageRight;
     get imgClass(): any {
@@ -146,11 +144,13 @@ export class CheckboxItem extends CheckedItem {
 export class RadioboxItem extends CheckedItem {
 
     constructor(key: string, text: string, groupBy: string = "", isChecked: boolean = false) {
-        super(key, text, "radiobox");
+        super(key, text);
         this.groupBy = groupBy;
         this.isChecked = isChecked;
     }
     
+    get getClass(): string { return "radiobox"; }
+
     // return "img img-border img-right mdi " + this.imageRight;
     get imgClass(): any {
         let s = "img-check option";
@@ -172,7 +172,6 @@ export class RadioboxItem extends CheckedItem {
         return false;
     }
 }
-
 
 export class RightImageInfo {
     public imageRight: string = "";

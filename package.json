@@ -1,41 +1,30 @@
 {
   "name": "vue-dropdown-advanced",
   "version": "0.1.1",
-  "private": false,
   "description": "A seriously advanced Vue Dropdown tool with many custom options.",
+  "main": "dist/vue-dropdown-advanced.umd.js",
+  "keywords": ["vue", "dropdown", "advanced", "radiobutton", "checkbox"],
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
     "build-bundle": "vue-cli-service build --target lib --name vue-dropdown-advanced ./src/components/index.js",
-    "test:unit": "vue-cli-service test:unit"
+    "lint": "vue-cli-service lint"
   },
-  "main": "dist/vue-dropdown-advanced.umd.js",
-  "files": [
-    "dist/*",
-    "src/components/index.js"
-  ],
   "dependencies": {},
   "devDependencies": {
     "@mdi/font": "^3.6.95",
-    "@types/jest": "^23.1.4",
     "@vue/cli-plugin-typescript": "^3.6.0",
-    "@vue/cli-plugin-unit-jest": "^3.7.0",
     "@vue/cli-service": "^3.7.0",
-    "@vue/test-utils": "1.0.0-beta.29",
-    "core-js": "^2.6.5",
     "sass": "^1.20.1",
     "sass-loader": "^7.1.0",
-    "ts-jest": "^23.0.0",
     "typescript": "^3.4.3",
-    "vue": "^2.6.10",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.5.21",
+    "core-js": "^2.6.5",
+    "vue": "^2.6.10"
   },
-  "keywords": [
-    "vue",
-    "dropdown",
-    "advanced",
-    "radiobutton",
-    "checkbox"
+  "files": [
+    "dist/*",
+    "src/components/index.js"
   ]
 }

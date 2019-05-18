@@ -1,12 +1,17 @@
 import { shallowMount } from '@vue/test-utils'
-import HelloWorld from '@/components/HelloWorld.vue'
+import Banner from '@/components/Banner.vue'
 
-describe('HelloWorld.vue', () => {
+debugger;
+
+describe('Banner.vue', () => {
   it('renders props.msg when passed', () => {
     const msg = 'new message'
-    const wrapper = shallowMount(HelloWorld, {
-      propsData: { msg }
+    const position = 'bottom'
+    const wrapper = shallowMount(Banner, {
+      propsData: { position }
     })
-    expect(wrapper.text()).toMatch(msg)
+    //expect(wrapper.text()).toMatch(msg)
+    //expect(wrapper.exists)
+    expect(wrapper).toBeDefined;    // .toHaveClass('foo')
   })
 })

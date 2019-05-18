@@ -10,6 +10,8 @@
 * popup is closable through code
 * and much more!
 
+macbook test1
+
 ## Demo
 Have a look at the [demo-page](http://www.vuedropdown.marcelheeremans.com) to check it out!
 

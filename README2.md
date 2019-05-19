@@ -9,6 +9,7 @@
 * the dropdown can be created through code using any html element as source
 * popup is closable through code
 * and much more!
+// test from macbook 
 
 ## Demo
 Have a look at the [demo-page](http://www.vuedropdown.marcelheeremans.com) to check it out!

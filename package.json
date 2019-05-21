@@ -3,7 +3,13 @@
   "version": "0.1.1",
   "description": "A seriously advanced Vue Dropdown tool with many custom options.",
   "main": "dist/vue-dropdown-advanced.umd.js",
-  "keywords": ["vue", "dropdown", "advanced", "radiobutton", "checkbox"],
+  "keywords": [
+    "vue",
+    "dropdown",
+    "advanced",
+    "radiobutton",
+    "checkbox"
+  ],
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -16,12 +22,13 @@
     "@mdi/font": "^3.6.95",
     "@vue/cli-plugin-typescript": "^3.6.0",
     "@vue/cli-service": "^3.7.0",
+    "@vue/test-utils": "^1.0.0-beta.29",
+    "core-js": "^2.6.5",
     "sass": "^1.20.1",
     "sass-loader": "^7.1.0",
     "typescript": "^3.4.3",
-    "vue-template-compiler": "^2.5.21",
-    "core-js": "^2.6.5",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "vue-template-compiler": "^2.5.21"
   },
   "files": [
     "dist/*",

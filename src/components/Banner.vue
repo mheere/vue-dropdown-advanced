@@ -3,7 +3,8 @@
     <slot></slot>
   </div>
 </template>
-<script>
+<script lang="ts">
+import Vue from 'vue';
 const defaultStyles = {
   left: 0,
   right: 0,

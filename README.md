@@ -10,11 +10,11 @@ An advanced pure Vue Dropdown control with many customisable options.
 * dropdown location is configurable (left/right/up/down)
 * and much more!
 
-## --------------- Under active development ---------------
+## --------------- under development ---------------
 
 
 ## Demo
-Have a look at the [demo-page](http://www.vuedropdown.marcelheeremans.com) to check it out!
+Check it out at [demo-page](http://www.vuedropdown.marcelheeremans.com)!
 
 ## Typescript
 The code snippets below are extracts from the demo project.  An `index.d.ts` file providing intellisense will be included soon.
@@ -103,7 +103,7 @@ Again, we 'attach' a DropDownMenu menu to the 'Example Down Right' div by nestin
 </div>
 ```
 
-Notice we have bound the 'items' property to the 'fixedItems' data property of the vue model.  When the parent is 'clicked' the onClick handler is called with the item itself but also any other dropdown state.
+Again, notice we have bound the 'items' property to the 'fixedItems' data property of the vue model.  When the parent is 'clicked' the onClick handler is called with the item itself but also any other dropdown state.
 
 ```javascript
 /// The 'javascript' part of the Vue file		

@@ -1,37 +1,36 @@
 <template>
-  <div class="dda-container" v-bind:style="getStyle" ref="mydd">
-    <!-- <dropdown-toolbar v-bind:items="items"> </dropdown-toolbar> -->
-      <div class="dda-dropdown-list">
-        <div v-for="(item) in my_items" 
-          :class="item.getClass"
-          :key="item.key" 
-          @click.stop.prevent="clickFromTempl(item)">
+  <div class="dda-container" v-bind:style="getStyle" ref="mydropdown">
+    <div class="dda-dropdown-list">
+      <div v-for="(item) in my_items" 
+        :class="item.getClass"
+        :key="item.key" 
+        @click.stop.prevent="clickFromTempl(item)">
 
-          <div v-if="item.isHeaderItem" class="dda-dropdown-item">
-              {{ item.text }}
-          </div>
-
-          <div v-else-if="item.isActionItem" class="dda-dropdown-item"  >
-              <span v-if="item.hasImg" >
-                <span v-bind:class="item.imgClass"></span>
-              </span>
-              <span class='flex' >
-                {{ item.text }}
-              </span>
-              <span v-for="(imgItem, index) in item.imagesRight" :key="index" @click.stop.prevent="clickFromTempl(item, imgItem)">
-                  <span v-bind:class="imgItem.imgClass" v-bind:title="imgItem.toolTip"></span>
-              </span>
-          </div>
-
-          <div v-else-if="item.isRadioboxItem || item.isCheckboxItem" class="dda-dropdown-item" >
-              <span v-bind:class="item.imgClass"></span>
-              <span class='flex'>
-                {{ item.text }}
-              </span>
-          </div>
-
+        <div v-if="item.isHeaderItem" class="dda-dropdown-item">
+            {{ item.text }}
         </div>
+
+        <div v-else-if="item.isActionItem" class="dda-dropdown-item"  >
+            <span v-if="item.hasImg" >
+              <span v-bind:class="item.imgClass"></span>
+            </span>
+            <span class='flex' >
+              {{ item.text }}
+            </span>
+            <span v-for="(imgItem, index) in item.imagesRight" :key="index" @click.stop.prevent="clickFromTempl(item, imgItem)">
+                <span v-bind:class="imgItem.imgClass" v-bind:title="imgItem.toolTip"></span>
+            </span>
+        </div>
+
+        <div v-else-if="item.isRadioboxItem || item.isCheckboxItem" class="dda-dropdown-item" >
+            <span v-bind:class="item.imgClass"></span>
+            <span class='flex'>
+              {{ item.text }}
+            </span>
+        </div>
+
       </div>
+    </div>
   </div>
 </template>
 
@@ -62,6 +61,9 @@ export class DropDownInfo {
 export default Vue.extend({
   name: "DropDownMenu",
   props: {
+    parent: {
+      type: HTMLDivElement 
+    },
     items: {
       type: Array,
       default: function () {
@@ -236,8 +238,8 @@ export default Vue.extend({
   mounted() {
 
     // 
-    let el: any = this.$refs.mydd;
-    this.$element = el.parentElement;
+    let el: any = this.$refs.mydropdown;
+    this.$element = this.parent || el.parentElement;
 
     // set the default
     this.my_direction = DropDownDirection.DownRight; 

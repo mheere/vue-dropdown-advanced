@@ -18,9 +18,7 @@
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit"
   },
-  "dependencies": {
-    
-  },
+  "dependencies": {},
   "devDependencies": {
     "@mdi/font": "^3.6.95",
     "@types/jest": "^23.1.4",

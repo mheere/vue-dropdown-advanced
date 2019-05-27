@@ -13,11 +13,16 @@ describe('DropDownMenu.vue', () => {
   items.push(new ActionItem("B", "Go to California "));
   items.push(new ActionItem("C", "Visit the United Kingdom"));
 
+  let onClick = (info: any) => {
+    console.log("The test clicked: " + info.text);
+  };
+
   const wrapper = shallowMount(DropDownMenu, {
     propsData: { 
       parent: divParent,
       items: items,
-      direction: 'down-right'
+      direction: 'down-right',
+      click: onClick
     }
   })
 
@@ -48,12 +53,23 @@ describe('DropDownMenu.vue', () => {
   it('dropdown item click should collapse the dropdown', () => {
     divParent.click();  // to open the dropdown (to populate it)
     expect(wrapper.findAll('.dda-dropdown-item').length).toBe(4)
+    expect(wrapper.find('.dda-dropdown-item')).toBeDefined();
+    
+    let xx = wrapper.find('.dda-dropdown-item');
+    console.log(xx.html());
+
+    xx.trigger('click');
+
+    setTimeout(() => {
+      console.log("ending....");
+      expect(wrapper.findAll('.dda-dropdown-item').length).toBe(0)  
+    }, 500);
+    //console.log(wrapper.find('.dda-dropdown-item'))
+    
     //wrapper.find('.dda-dropdown-item').trigger('click');
     //expect(wrapper.findAll('.dda-dropdown-item').length).toBe(0)
     
-    // Vue.nextTick(() => {
-    //   expect(wrapper.findAll('.dda-dropdown-item').length).toBe(0)
-    // });
+  
     
 
   })

@@ -1,6 +1,6 @@
 {
   "name": "vue-dropdown-advanced",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A seriously advanced Vue Dropdown tool with many custom options.",
   "main": "dist/vue-dropdown-advanced.umd.js",
   "keywords": [
@@ -10,7 +10,7 @@
     "radiobutton",
     "checkbox"
   ],
-  "private": true,
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

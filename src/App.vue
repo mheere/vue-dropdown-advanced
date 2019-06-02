@@ -65,12 +65,12 @@
         <drop-down-menu v-bind:items="myitems_ul" :click="this.onClick" @click="this.onClick" direction="up-left">  </drop-down-menu>
       </div>
 
-      
+      <div class='button example-programmatically'>
+        programmatically
+      </div>
 
     </div>
    
-    <!-- <Banner position='bottom' hello='marcel'>This is a banner - testing by marcel...</Banner> -->
-
     <div class='notification' v-bind:class="{ show: msg.length > 0 }">
       {{ msg }}
     </div>
@@ -80,8 +80,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Banner from "./components/Banner.vue";
-import DropDownMenu, { DropDownInfo } from "./components/DropDownMenu.vue";
+import DropDownMenu, { DropDownControl, DropDownInfo } from "./components/DropDownMenu.vue";
+//import { DropDownControl } from "./components/DropDownControl";
 import { DropDownItemBase, ActionItem, HeaderItem, DropDownDirection } from "./components/DropDownItems";
 import { getTestItems } from './data';
 import { delay, createGuidRight5 } from './utils';
@@ -107,6 +107,9 @@ export default Vue.extend({
       fixedItems,
       msg
     }
+  },
+  components: {
+    DropDownMenu
   },
   methods: {
       onClick(info: DropDownInfo) {
@@ -134,8 +137,24 @@ export default Vue.extend({
         //this.fixedItems = getTestItems("logout");
       }
   },
-  components: {
-    Banner, DropDownMenu
+  mounted() {
+
+    setTimeout(() => {
+      // example-programmatically
+      let prog = document.getElementsByClassName("example-programmatically");
+      
+      let x = new DropDownControl(prog[0]);
+      x.items = getTestItems("showcase");
+      x.openOnCreate = true;
+      x.onClick = (info: DropDownInfo) => {
+        console.log(info.item.key)
+        //debugger;
+      }
+      x.minWidth = "300px"
+      x.maxHeight = "150px";
+      x.createMenu();  
+    }, 2000);
+
   },
   created() {
     this.myitems_dr = getTestItems("simple");

@@ -40,7 +40,9 @@ export class DropDownItemBase {
         return instanceOf(this, HeaderItem);
     }
 
-    get getClass(): string { return "not-implemented"; }
+    public getBaseClass(description: string): string { 
+        return description + " " + (this.isDisabled ? "disabled" : "");
+    }
 
 }
 
@@ -89,7 +91,8 @@ export class ActionItem extends DropDownItemBase {
 
     get hasImg(): boolean { return this.imageLeft.length > 0}
 
-    get getClass(): string { return "action"; }
+    get getClass(): string { return this.getBaseClass("action"); }
+
 
     get imgClass(): string { return "img img-left mdi " + this.imageLeft; }
 
@@ -124,7 +127,7 @@ export class CheckboxItem extends CheckedItem {
         this.isChecked = isChecked;
     }
 
-    get getClass(): string { return "checkbox"; }
+    get getClass(): string { return this.getBaseClass("checkbox"); }
 
     // return "img img-border img-right mdi " + this.imageRight;
     get imgClass(): any {
@@ -149,7 +152,7 @@ export class RadioboxItem extends CheckedItem {
         this.isChecked = isChecked;
     }
     
-    get getClass(): string { return "radiobox"; }
+    get getClass(): string { return this.getBaseClass("radiobox"); }
 
     // return "img img-border img-right mdi " + this.imageRight;
     get imgClass(): any {

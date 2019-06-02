@@ -1,5 +1,5 @@
 import { mount, shallowMount } from '@vue/test-utils'
-import DropDownMenu from '@/components/DropDownMenu.vue'
+import  DropDownMenu from '@/components/DropDownMenu.vue'
 import { DropDownItemBase, ActionItem, SeperatorItem } from '@/components/DropDownItems'
 import { getTestItems } from '@/data';
 import Vue from 'vue';
@@ -60,16 +60,17 @@ describe('DropDownMenu.vue', () => {
 
     xx.trigger('click');
 
-    setTimeout(() => {
-      console.log("ending....");
-      expect(wrapper.findAll('.dda-dropdown-item').length).toBe(0)  
-    }, 500);
+    expect(wrapper.findAll('.dda-dropdown-item').length).toBe(0)
+
+
+    // setTimeout(() => {
+    //   console.log("ending....");
+    //   expect(wrapper.findAll('.dda-dropdown-item').length).toBe(0)  
+    // }, 500);
     //console.log(wrapper.find('.dda-dropdown-item'))
     
     //wrapper.find('.dda-dropdown-item').trigger('click');
     //expect(wrapper.findAll('.dda-dropdown-item').length).toBe(0)
-    
-  
     
 
   })

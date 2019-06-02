@@ -8,9 +8,8 @@ An advanced pure Vue Dropdown control with many customisable options.
 * images are supported on left and on the right (multiple)
 * dropdown items are removed from the markup when dropdown is closed
 * dropdown location is configurable (left/right/up/down)
+* the dropdown can be created through code using any html element as source
 * and much more!
-
-## --------------- under development ---------------
 
 
 ## Demo
@@ -216,6 +215,53 @@ A certain minimum or maximum of the dropdown can be enforced by providing a `min
 </div>
 ```
 
+# How to use this programmatically (no HTML markup!)
+In cases where you just want to attach the dropdown to an existing element somewhere on your form without altering your template you can use the `DropDownControl` class.
+
+1. Simply create a new `DropDownControl` object passing in the element you wish to attach the dropdown to.  This could be **any** html element.  
+2. Assign the dropdown items to show
+3. Attach an event handler(s) 
+4. Set some specific properties (like minWidth or OpenOnCreate)
+5. Once configured call 'createMenu()' which will create and prepare the dropdown control
+
+### In its simplest form it would look something like this:
+```javascript
+static demo1 = () => {
+    
+    let el = document.getElementsByClassName("example-programmatically");
+
+    // specify the dropdown items
+    let items = [];
+    items.push(new ActionItem("logout", "Logout", "mdi-exit-run", false, _ => alert(_.key)));
+		items.push(new SeperatorItem());
+		items.push(new ActionItem("profile", "Show Profile", "mdi-face"));
+		items.push(new ActionItem("shortcuts", "Show Shortcuts", "mdi-access-point"));
+		items.push(new ActionItem("setting", "System Settings and a whole lot more and stuff", "mdi-cogs"));
+
+    // 1. create a new DropDownControl for this element
+    var dd: DropDownControl = new DropDownControl(el[0]);
+
+    // 2. assign the items to diplay when clicked
+    dd.items = items;
+
+    // 3. set a handler when the user selects an item
+    dd.onClick = (info: DropDownInfo) => {
+      debugger;
+      console.log(info.item.key);  // etc...
+    }
+
+    // 4. set some more specific properties
+    dd.openOnCreate = true;
+    dd.minWidth = "300px"
+    dd.maxHeight = "150px";
+    dd.createMenu();
+
+    // 5. create the vue dropdown control
+    dd.createMenu();
+}
+```
+
+
 
 # History
 
@@ -227,3 +273,4 @@ v 0.0.10 | exporting more helper objects (like getTestItems, delay, createGuidRi
 v 0.0.11 | cleaned package - separated css and materialdesignicons.css
 v 0.1.0 | introduced @click event handler in addition to :click callback
 v 0.1.1 | dropdown now supports min-width, max-width and max-height properties
+v 0.1.2 | introduction of the DropDownControl allowing full programmatic control

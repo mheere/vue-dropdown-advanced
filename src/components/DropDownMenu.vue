@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { ActionItem, DropDownItemBase, DropDownDirection, RightImageInfo } from "./DropDownItems";
+import { ActionItem, SeperatorItem, DropDownItemBase, DropDownDirection, RightImageInfo } from "./DropDownItems";
 import { getCoords } from "../utils";
 
 // little trick bypassing bl** typescript checking of $element....
@@ -58,7 +58,11 @@ export class DropDownInfo {
   public imageOnRight: RightImageInfo = undefined;
 }
 
-export default Vue.extend({
+// -----------------------------
+// define the DropDownMenu
+// -----------------------------
+let vueDropDownMenu = Vue.extend({
+//export default Vue.extend({
   name: "DropDownMenu",
   props: {
     parent: {
@@ -153,14 +157,6 @@ export default Vue.extend({
     },
     setTitleAttributesIfNeccesary() {
 
-      // // get a ref to our dda-dropdown-list element
-      // let el = this.$element.querySelector("div.dda-dropdown-list");
-
-      // // check for overrides of the default min/max width/height
-      // if (this.minWidth != "0") el.style.minWidth = this.minWidth;
-      // if (this.maxWidth != "0") el.style.maxWidth = this.maxWidth;
-      // if (this.maxHeight != "0") el.style.maxHeight = this.maxHeight;
-
       // get a list of all the 'text's from the all items
       let elementList = this.$element.querySelectorAll("div.dda-dropdown-list .flex");
       elementList.forEach(el => {
@@ -254,27 +250,91 @@ export default Vue.extend({
       this.my_direction = this.direction;
     }
 
-    // get a ref to our dda-dropdown-list element
-    let elDDA = this.$element.querySelector("div.dda-dropdown-list");
+    // When inserting the DropDownMenu into the template all is ok, but when
+    // we create the dropdown programmatically we have to wait for a render cycle
+    // to have passed (otherwise the template has not yet rendered)
+    Vue.nextTick(() => {
+      
+      // get a ref to our dda-dropdown-list element
+      let elDDA = this.$element.querySelector("div.dda-dropdown-list");
 
-    // check for overrides of the default min/max width/height
-    if (this.minWidth != "0") elDDA.style.minWidth = this.minWidth;
-    if (this.maxWidth != "0") elDDA.style.maxWidth = this.maxWidth;
-    if (this.maxHeight != "0") elDDA.style.maxHeight = this.maxHeight;
+      // check for overrides of the default min/max width/height
+      if (this.minWidth != "0") elDDA.style.minWidth = this.minWidth;
+      if (this.maxWidth != "0") elDDA.style.maxWidth = this.maxWidth;
+      if (this.maxHeight != "0") elDDA.style.maxHeight = this.maxHeight;
 
-    // if the source element does not have a 'position' set then we'll set it to 'relative'
-    var posNotSet =
-      this.$element.position == "" || this.$element.position == "static";
-    if (!posNotSet)
-      this.$element.style.position = "relative";
+      // if the source element does not have a 'position' set then we'll set it to 'relative'
+      var posNotSet =
+        this.$element.position == "" || this.$element.position == "static";
+      if (!posNotSet)
+        this.$element.style.position = "relative";
 
-    // listen for 'clicks' on the given parent element which shows the dropdown
-    this.$element.addEventListener("click", this.toggle);
+      // listen for 'clicks' on the given parent element which shows the dropdown
+      this.$element.addEventListener("click", this.toggle);
+    })
+    
   },
   beforeDestroy () {
     this.$element.addEventListener("click", this.toggle);
   }
 });
+
+export { vueDropDownMenu as default };
+
+// -------------------------------------
+// We export a DropDownControl object so the user can programmatically create
+// a dropdown menu for any given DOM element as and when needed (without
+// editing the HTML template!)
+// -------------------------------------
+export class DropDownControl {
+	
+	private _element: any = null;
+  private _show: boolean = false;
+  
+  public openOnCreate: boolean = false;
+  public items: DropDownItemBase[];
+  public itemsAsync: any;
+  public onClick: (DropDownInfo) => void;
+  public direction: string = "down-right";
+  public minWidth: string = "0";
+  public maxWidth: string = "0";
+  public maxHeight: string = "0";
+	
+	constructor(el: Element) {
+		this._element = el;
+  }
+  
+  public createMenu() {
+    
+    // create options object I can pass in to the Vue component
+    let pdata = { 
+      parent: this._element,
+      items: this.items,
+      itemsAsync: this.itemsAsync,
+			direction: this.direction,
+      click: this.onClick,
+      minWidth: this.minWidth,
+      maxWidth: this.maxWidth,
+      maxHeight: this.maxHeight 
+		}
+    
+    // create new DropDownMenu with the given properties
+		let x = new vueDropDownMenu({
+			propsData: pdata
+		});
+
+		// and mount this to the given parent element
+    var component = x.$mount();
+    this._element.appendChild(component.$el)
+
+    Vue.nextTick(() => {
+      if (this.openOnCreate) this._element.click();
+    })
+    
+  }
+
+}
+
 </script>
 
 <style lang="scss">

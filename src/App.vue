@@ -147,8 +147,7 @@ export default Vue.extend({
       x.items = getTestItems("showcase");
       x.openOnCreate = true;
       x.onClick = (info: DropDownInfo) => {
-        console.log(info.item.key)
-        //debugger;
+        console.log("example-programmatically-openOnCreate: " + info.item.key)
       }
       x.minWidth = "300px"
       x.maxHeight = "150px";

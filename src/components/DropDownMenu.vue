@@ -327,9 +327,9 @@ export class DropDownControl {
     var component = x.$mount();
     this._element.appendChild(component.$el)
 
-    Vue.nextTick(() => {
-      if (this.openOnCreate) this._element.click();
-    })
+    // wait for nextTick to automatically open the dropdown
+    if (this.openOnCreate)
+      Vue.nextTick(() => this._element.click())
     
   }
 

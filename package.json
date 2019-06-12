@@ -1,6 +1,6 @@
 {
   "name": "vue-dropdown-advanced",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A seriously advanced Vue Dropdown tool with many custom options.",
   "main": "dist/vue-dropdown-advanced.umd.js",
   "keywords": [

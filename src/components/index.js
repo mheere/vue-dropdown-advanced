@@ -17,6 +17,7 @@ import { delay, createGuidRight5 } from '../utils'
 // ----------------------------------------
 // export all classes we wished to export 
 // ----------------------------------------
-export default { DropDownMenu, DropDownControl, DropDownInfo, DropDownItemBase, ActionItem, SeperatorItem, CheckboxItem, RadioboxItem, RightImageInfo, 
+export default { DropDownMenu, DropDownControl, DropDownInfo, 
+		DropDownItemBase, ActionItem, SeperatorItem, CheckboxItem, RadioboxItem, RightImageInfo, 
 		HeaderItem, DropDownDirection, getTestItems, delay, createGuidRight5 }
 

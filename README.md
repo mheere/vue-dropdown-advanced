@@ -48,6 +48,8 @@ If you wish to use images then also include the scoped @mdi/font/css/materialdes
 
 We 'attach' a DropDownMenu menu to the 'Example Down Right' div simply by nesting it within its parent element as shown in the Vue template below.  This is imporant since a 'click' handler is attached to this parent so the dropdown can be toggled when clicked.
 
+There is also a [programmatic way](#how-to-use-this-programmatically) of attaching this dropdown to any DOM element - more on this later.
+
 ```javascript
 /// The 'template' part of the Vue file
 <div class='button example-dr'>
@@ -102,7 +104,7 @@ Again, we 'attach' a DropDownMenu menu to the 'Example Down Right' div by nestin
 </div>
 ```
 
-Again, notice we have bound the 'items' property to the 'fixedItems' data property of the vue model.  When the parent is 'clicked' the onClick handler is called with the item itself but also any other dropdown state.
+Again, we are binding the 'items' property to the 'fixedItems' data property of the vue model.  When the parent is 'clicked' the onClick handler is called with the item itself but also any other dropdown state.
 
 ```javascript
 /// The 'javascript' part of the Vue file		
@@ -141,7 +143,7 @@ onClick(info: DropDownInfo) {
 
 ```
 
-Note the `groupBy` property available on Radiobox items.  Identical `groupBy` values will force a mutually exclusive group to be created, ie only a single radiobox can be 'checked' within a group. Hence in the example above we have two groups; one with groupBy marker 'A', the other with value 'B'.  These could be any unique strings.
+Note the `groupBy` property available on Radiobox items.  Identical `groupBy` values will force a mutually exclusive group to be created, ie only a single radiobox can be 'checked' within a group. Hence in the example above we have two groups; one with groupBy marker 'A', the other with value 'B'.  These identifiers could be any unique string.
 			
 ### Right placed Images 
 Images placed on the right of the text are selectable and therefore can be 'listened' for. 
@@ -180,7 +182,8 @@ The default is `down-right` but it can be set to `down-left`, `up-left` or `up-r
 
 ## Retrieving dropdown items asynchronously
 
-When binding a function to the itemsAsync prop of the DropDownMenu a is made to this function when the dropdown is requested.  The function is expected to return an array of DropDown items.  This is **_extremely_** useful when dropdown items can only be determined at runtime.
+An asynchronous request for data can be made by binding a function to the itemsAsync prop of the DropDownMenu.  This function is expected to return an array of DropDown items.  This is **_extremely_** useful when dropdown items can only be determined at runtime.
+
 
 ```javascript
 /// The 'template' part of the Vue file
@@ -215,8 +218,8 @@ A certain minimum or maximum of the dropdown can be enforced by providing a `min
 </div>
 ```
 
-# How to use this programmatically (no HTML markup!)
-In cases where you just want to attach the dropdown to an existing element somewhere on your form without altering your template you can use the `DropDownControl` class.
+# How to use this programmatically
+In cases where you just want to attach the dropdown to an DOM existing element anywhere on your form without altering your template you can use the `DropDownControl` class.
 
 1. Simply create a new `DropDownControl` object passing in the element you wish to attach the dropdown to.  This could be **any** html element.  
 2. Assign the dropdown items to show
@@ -254,8 +257,7 @@ static demo1 = () => {
     dd.openOnCreate = true;
     dd.minWidth = "300px"
     dd.maxHeight = "150px";
-    dd.createMenu();
-
+    
     // 5. create the vue dropdown control
     dd.createMenu();
 }

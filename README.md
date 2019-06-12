@@ -267,10 +267,12 @@ static demo1 = () => {
 
 |version | Notes |
 | ---- | ------ |
-v 0.0.1..8 | Initial release - work in progress
-v 0.0.9 | small fixes
-v 0.0.10 | exporting more helper objects (like getTestItems, delay, createGuidRight5)
-v 0.0.11 | cleaned package - separated css and materialdesignicons.css
-v 0.1.0 | introduced @click event handler in addition to :click callback
-v 0.1.1 | dropdown now supports min-width, max-width and max-height properties
+v 0.1.3 | css updates
 v 0.1.2 | introduction of the DropDownControl allowing full programmatic control
+v 0.1.1 | dropdown now supports min-width, max-width and max-height properties
+v 0.1.0 | introduced @click event handler in addition to :click callback
+v 0.0.11 | cleaned package - separated css and materialdesignicons.css
+v 0.0.10 | exporting more helper objects (like getTestItems, delay, createGuidRight5)
+v 0.0.9 | small fixes
+v 0.0.1..8 | Initial release - work in progress
+

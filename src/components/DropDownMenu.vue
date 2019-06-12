@@ -1,16 +1,16 @@
 <template>
-  <div class="dda-container" v-bind:style="getStyle" ref="mydropdown">
-    <div class="dda-dropdown-list">
+  <div class="vdda-container" v-bind:style="getStyle" ref="mydropdown">
+    <div class="vdda-dropdown-list">
       <div v-for="(item) in my_items" 
         :class="item.getClass"
         :key="item.key" 
         @click.stop.prevent="clickFromTempl(item)">
 
-        <div v-if="item.isHeaderItem" class="dda-dropdown-item">
+        <div v-if="item.isHeaderItem" class="vdda-dropdown-item">
             {{ item.text }}
         </div>
 
-        <div v-else-if="item.isActionItem" class="dda-dropdown-item"  >
+        <div v-else-if="item.isActionItem" class="vdda-dropdown-item"  >
             <span v-if="item.hasImg" >
               <span v-bind:class="item.imgClass"></span>
             </span>
@@ -22,7 +22,7 @@
             </span>
         </div>
 
-        <div v-else-if="item.isRadioboxItem || item.isCheckboxItem" class="dda-dropdown-item" >
+        <div v-else-if="item.isRadioboxItem || item.isCheckboxItem" class="vdda-dropdown-item" >
             <span v-bind:class="item.imgClass"></span>
             <span class='flex'>
               {{ item.text }}
@@ -158,7 +158,7 @@ let vueDropDownMenu = Vue.extend({
     setTitleAttributesIfNeccesary() {
 
       // get a list of all the 'text's from the all items
-      let elementList = this.$element.querySelectorAll("div.dda-dropdown-list .flex");
+      let elementList = this.$element.querySelectorAll("div.vdda-dropdown-list .flex");
       elementList.forEach(el => {
         el.setAttribute('title', "");   // first clear 
 
@@ -255,8 +255,8 @@ let vueDropDownMenu = Vue.extend({
     // to have passed (otherwise the template has not yet rendered)
     Vue.nextTick(() => {
       
-      // get a ref to our dda-dropdown-list element
-      let elDDA = this.$element.querySelector("div.dda-dropdown-list");
+      // get a ref to our vdda-dropdown-list element
+      let elDDA = this.$element.querySelector("div.vdda-dropdown-list");
 
       // check for overrides of the default min/max width/height
       if (this.minWidth != "0") elDDA.style.minWidth = this.minWidth;
@@ -367,7 +367,7 @@ $back-colour-right-img-hover: #bbbdc361;
   flex: 1;
 }
 
-.dda-container {
+.vdda-container {
   position: absolute;
   z-index: 3;
   color: rgb(59, 64, 95);
@@ -398,7 +398,7 @@ $back-colour-right-img-hover: #bbbdc361;
     margin-right: 3px;
   }
 
-  .dda-dropdown-list {
+  .vdda-dropdown-list {
     max-width: 200px;
     max-height: 260px;
     border: 2px solid $border-colour;
@@ -484,7 +484,7 @@ $back-colour-right-img-hover: #bbbdc361;
     }
   }
 
-  .dda-dropdown-item {
+  .vdda-dropdown-item {
     @include flexbox();
     white-space: nowrap;
     text-overflow: ellipsis;

@@ -71,7 +71,7 @@ export class HeaderItem extends DropDownItemBase {
 
     public getStyle() {
         return {
-            class: ['dda-dropdown-item ']
+            class: ['vdda-dropdown-item ']
         }
     }
 }

@@ -269,6 +269,7 @@ static demo1 = () => {
 
 |version | Notes |
 | ---- | ------ |
+v 0.1.4 | security risk package updates
 v 0.1.3 | css updates
 v 0.1.2 | introduction of the DropDownControl allowing full programmatic control
 v 0.1.1 | dropdown now supports min-width, max-width and max-height properties
